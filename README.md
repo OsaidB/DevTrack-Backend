@@ -1,33 +1,66 @@
 # DevTrack Backend
 
-This repository contains the backend code for DevTrack, a project management tool for developers. The backend is built with Spring Boot and provides RESTful APIs for managing users, projects, tasks, and more.
+DevTrack is a web application designed for developers to manage tasks and projects effectively. It provides functionality similar to Trello and Jira but is focused solely on development tasks. The backend of this application is built using Spring Boot and provides RESTful APIs for managing projects, tasks, and user roles.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the Application](#running-the-application)
+- [API Endpoints](#api-endpoints)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+- User authentication and authorization
+- Create and manage projects
+- Create and manage tasks within projects
+- Assign tasks to developers
+- Task statuses: To Do, In Progress, Done, and QA
+- Role-based access control (Admin, Frontend Developer, Backend Developer, QA Developer)
 
 ## Technologies Used
 
-- **Spring Boot 3.3.2**
-- **Spring Data JPA (Hibernate)**
-- **MySQL Database**
-- **Maven (as a build tool)**
-- **Lombok (for reducing boilerplate code)**
-
-## Requirements
-
-- Java Development Kit (JDK) 21
+- Spring Boot 3.3.2
+- Spring Data JPA (Hibernate)
 - MySQL Database
+- Lombok
 - Maven
-- IDE (IntelliJ IDEA recommended)
+- Java 21
 
 ## Getting Started
 
-### Setup MySQL Database
+### Prerequisites
 
-1. Install MySQL and create a new database named `devtrack`.
-2. Update the `application.properties` file with your MySQL username and password.
+- JDK 21
+- MySQL Database
+- Maven
+- IntelliJ IDEA or any other preferred IDE
+
+### Installation
+
+1. Clone the repository:
+
+```
+git clone https://github.com/OsaidB/DevTrack-Backend.git
+```
+
+2. Navigate to the project directory:
+
+```sh
+cd DevTrack-Backend
+```
+
+3. Configure the database in `src/main/resources/application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/devtrack
-spring.datasource.username=YOUR_MYSQL_USERNAME
-spring.datasource.password=YOUR_MYSQL_PASSWORD
+spring.datasource.username=root
+spring.datasource.password=1234
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 spring.jpa.hibernate.ddl-auto=update
@@ -36,76 +69,44 @@ spring.jpa.open-in-view=false
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 ```
 
-### Build and Run the Project
+### Running the Application
 
-1. Clone the repository:
+1. Build the project using Maven:
 
-```bash
-git clone https://github.com/yourusername/DevTrack-Backend.git
-cd DevTrack-Backend
 ```
-
-2. Build the project using Maven:
-
-```bash
 mvn clean install
 ```
 
-3. Run the Spring Boot application:
+2. Run the Spring Boot application:
 
-```bash
+```
 mvn spring-boot:run
 ```
 
-The backend server will start at `http://localhost:8080`.
+The application should now be running at `http://localhost:8080`.
 
-### Testing the APIs
+## API Endpoints
 
-You can use Postman or any other API testing tool to test the APIs.
-
-#### Example: Create a User
-
-1. Open Postman.
-2. Create a new POST request to `http://localhost:8080/api/users`.
-3. Set the request body to JSON format and provide user details:
-
-```json
-{
-  "username": "johndoe",
-  "email": "johndoe@example.com",
-  "password": "password123",
-  "firstName": "John",
-  "lastName": "Doe",
-  "role": "frontend_developer",
-  "isAdmin": false
-}
-```
-
-4. Send the request and verify the response.
-
-## Project Structure
-
-```plaintext
-src/main/java/bisan/internship/devtrack
-├── config          # Configuration classes
-├── controller      # REST controllers
-├── dto             # Data Transfer Objects (DTOs)
-├── exception       # Custom exception handling
-├── mapper          # Mapper classes for converting between entities and DTOs
-├── model
-│   └── entity      # JPA entities
-├── repository      # Spring Data JPA repositories
-└── service         # Service layer interfaces and implementations
-```
+- `GET /api/users` - Retrieve all users
+- `POST /api/users` - Create a new user
+- `GET /api/users/{id}` - Retrieve a user by ID
+- `PUT /api/users/{id}` - Update a user by ID
+- `DELETE /api/users/{id}` - Delete a user by ID
+- `GET /api/projects` - Retrieve all projects
+- `POST /api/projects` - Create a new project
+- `GET /api/projects/{id}` - Retrieve a project by ID
+- `PUT /api/projects/{id}` - Update a project by ID
+- `DELETE /api/projects/{id}` - Delete a project by ID
+- `GET /api/tasks` - Retrieve all tasks
+- `POST /api/tasks` - Create a new task
+- `GET /api/tasks/{id}` - Retrieve a task by ID
+- `PUT /api/tasks/{id}` - Update a task by ID
+- `DELETE /api/tasks/{id}` - Delete a task by ID
 
 ## Contributing
 
-1. Fork the repository.
-2. Create a new feature branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -m 'Add some feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a pull request.
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements, bug fixes, or documentation updates.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
