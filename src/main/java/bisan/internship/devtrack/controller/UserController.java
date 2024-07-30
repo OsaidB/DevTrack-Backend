@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/users")
@@ -25,9 +27,34 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-//    @GetMapping("/get-user")
-//    public User getUser(@RequestParam Long id){
-//    return  userService.getUser(id);
-//    }
+    // Build Get User REST API
+    @GetMapping("{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") long userId){
+        UserDTO userDto = userService.getUserById(userId);
+        return ResponseEntity.ok(userDto);
+    }
+
+    // Build Get All Users REST API
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
+        List<UserDTO> usersDTO= userService.getAllUsers();
+        return ResponseEntity.ok(usersDTO);
+    }
+
+
+    // Build Update User REST API
+    @PutMapping("{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable("id") long userId,
+                                              @RequestBody UserDTO updatedUser){
+        UserDTO userDto = userService.updateUser(userId,updatedUser);
+        return ResponseEntity.ok(userDto);
+    }
+
+    // Build Delete User REST API
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") long userId){
+        userService.deleteUser(userId);
+        return ResponseEntity.ok("User Deleted Successfully");
+    }
 
 }
