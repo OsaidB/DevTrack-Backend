@@ -23,7 +23,7 @@ public class UserDTO {  //we use UserDTO class to transfer the data between clie
     private String firstName;
     private String lastName;
     private String role;
-    private Boolean isAdmin;
+    private Boolean isTeamLeader;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

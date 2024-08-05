@@ -24,7 +24,7 @@ public class UserMapper {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getRole(),
-                user.getIsAdmin(),
+                user.getIsTeamLeader(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
@@ -39,7 +39,7 @@ public class UserMapper {
                 userDto.getFirstName(),
                 userDto.getLastName(),
                 userDto.getRole(),
-                userDto.getIsAdmin(),
+                userDto.getIsTeamLeader(),
                 userDto.getCreatedAt(),
                 userDto.getUpdatedAt()
         );

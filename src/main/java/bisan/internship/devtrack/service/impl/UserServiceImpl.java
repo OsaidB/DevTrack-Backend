@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
 
 
         user.setRole(updatedUser.getRole());
-        user.setIsAdmin(updatedUser.getIsAdmin());
+        user.setIsTeamLeader(updatedUser.getIsTeamLeader());
 
         user.setUsername(updatedUser.getUsername());
         user.setFirstName(updatedUser.getFirstName());

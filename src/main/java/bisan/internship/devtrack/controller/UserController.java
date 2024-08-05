@@ -42,7 +42,6 @@ public class UserController {
         return ResponseEntity.ok(usersDTO);
     }
 
-
     // Build Update User REST API
     @PutMapping("{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable("id") long userId,

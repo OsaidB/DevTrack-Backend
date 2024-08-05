@@ -1,8 +1,7 @@
 package bisan.internship.devtrack.model.entity;
+
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
-
 import lombok.*;
 
 @Getter
@@ -15,30 +14,30 @@ import lombok.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
-    private Long userId;
+    private Long userId;//Id
 
-    private String username;
+    private String username;//userName for u
 
     @Column(name = "email_id" ,nullable = true, unique = true)
-    private String email;
+    private String email;//Email
 
     @Column(name = "pass")
-    private String password;
+    private String password;//password
 
     @Column(name = "first_name")
-    private String firstName;
+    private String firstName;//FirstName
 
     @Column(name = "last_name")
-    private String lastName;
+    private String lastName;//LastName
 
-    private String role;
+    private String role;//BackEnd?FrontEnd?QA?...
 
-    @Column(name = "is_admin")
-    private Boolean isAdmin;
+    @Column(name = "is_team_leader")
+    private Boolean isTeamLeader;//This: ex(account is a BackEnd TeamLeader)
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt;//time of created this account
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;//any edit on account info
 }
