@@ -11,18 +11,18 @@ public class ProjectMapper {
                 project.getProjectId(),
                 project.getName(),
                 project.getDescription(),
-                project.getCreatedBy().getUserId(),
+//                project.getCreatedBy().getUserId(), //always created by admin
                 project.getCreatedAt(),
                 project.getUpdatedAt()
         );
     }
 
-    public static Project mapToProjectEntity(ProjectDTO projectDto, User createdBy) { // method to map (convert) ProjectDTO into Project JPA entity
+    public static Project mapToProjectEntity(ProjectDTO projectDto) { // method to map (convert) ProjectDTO into Project JPA entity
         return new Project(
                 projectDto.getProjectId(),
                 projectDto.getName(),
                 projectDto.getDescription(),
-                createdBy,
+//                createdBy, //always created by admin
                 projectDto.getCreatedAt(),
                 projectDto.getUpdatedAt()
         );

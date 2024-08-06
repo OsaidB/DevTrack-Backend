@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "project")
+@Table(name = "projects")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +22,9 @@ public class Project {
     private String name;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    private User createdBy;
+//    @ManyToOne
+//    @JoinColumn(name = "created_by") //always created by admin
+//    private User createdBy;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

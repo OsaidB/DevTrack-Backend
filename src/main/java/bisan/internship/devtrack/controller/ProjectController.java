@@ -13,46 +13,40 @@ import java.util.List;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/api/projects")
 public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
 
-    // Build Add Project REST API
     @PostMapping
-    public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDto){
-        ProjectDTO createdProject = projectService.createProject(projectDto);
+    public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
+        ProjectDTO createdProject = projectService.createProject(projectDTO);
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
 
-    // Build Get Project REST API
-    @GetMapping("{id}")
-    public ResponseEntity<ProjectDTO> getProjectById(@PathVariable("id") long projectId){
-        ProjectDTO projectDto = projectService.getProjectById(projectId);
-        return ResponseEntity.ok(projectDto);
+    @GetMapping("{projectId}")
+    public ResponseEntity<ProjectDTO> getProjectById(@PathVariable("projectId") long projectId) {
+        ProjectDTO projectDTO = projectService.getProjectById(projectId);
+        return ResponseEntity.ok(projectDTO);
     }
 
-    // Build Get All Projects REST API
     @GetMapping
-    public ResponseEntity<List<ProjectDTO>> getAllProjects(){
-        List<ProjectDTO> projectsDTO = projectService.getAllProjects();
-        return ResponseEntity.ok(projectsDTO);
+    public ResponseEntity<List<ProjectDTO>> getAllProjects() {
+        List<ProjectDTO> projects = projectService.getAllProjects();
+        return ResponseEntity.ok(projects);
     }
 
-    // Build Update Project REST API
-    @PutMapping("{id}")
-    public ResponseEntity<ProjectDTO> updateProject(@PathVariable("id") long projectId,
-                                                    @RequestBody ProjectDTO updatedProject){
-        ProjectDTO projectDto = projectService.updateProject(projectId, updatedProject);
-        return ResponseEntity.ok(projectDto);
+    @PutMapping("{projectId}")
+    public ResponseEntity<ProjectDTO> updateProject(@PathVariable("projectId") long projectId,
+                                                    @RequestBody ProjectDTO updatedProject) {
+        ProjectDTO projectDTO = projectService.updateProject(projectId, updatedProject);
+        return ResponseEntity.ok(projectDTO);
     }
 
-    // Build Delete Project REST API
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteProject(@PathVariable("id") long projectId){
+    @DeleteMapping("{projectId}")
+    public ResponseEntity<String> deleteProject(@PathVariable("projectId") long projectId) {
         projectService.deleteProject(projectId);
-        return ResponseEntity.ok("Project Deleted Successfully");
+        return ResponseEntity.ok("Project deleted successfully");
     }
-
 }

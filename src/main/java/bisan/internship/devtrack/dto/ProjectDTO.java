@@ -15,7 +15,7 @@ public class ProjectDTO {
     private Long projectId;
     private String name;
     private String description;
-    private Long createdBy;
+//    private Long createdBy; //always created by admin
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
