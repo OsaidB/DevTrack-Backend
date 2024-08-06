@@ -19,7 +19,7 @@ public class Board {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
-    private Project projecId;
+    private Project projectId;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
