@@ -39,8 +39,13 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         User user = userRepo.findById(projectMemberDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + projectMemberDTO.getUserId()));
 
+        // Check if the user is already a member of the project
+        boolean exists = projectMemberRepo.existsByProjectProjectIdAndUserUserId(projectMemberDTO.getProjectId(), projectMemberDTO.getUserId());
+        if (exists) {
+            throw new IllegalArgumentException("User is already a member of the project.");
+        }
+
         ProjectMember projectMember = ProjectMemberMapper.mapToProjectMemberEntity(projectMemberDTO, project, user);
-        projectMember.setJoinedAt(LocalDateTime.now()); // Set current time for joinedAt
         ProjectMember savedProjectMember = projectMemberRepo.save(projectMember);
 
         return ProjectMemberMapper.mapToProjectMemberDTO(savedProjectMember);
