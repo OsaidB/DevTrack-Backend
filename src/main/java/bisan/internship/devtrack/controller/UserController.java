@@ -1,8 +1,6 @@
 package bisan.internship.devtrack.controller;
 
-
 import bisan.internship.devtrack.dto.UserDTO;
-import bisan.internship.devtrack.model.entity.User;
 import bisan.internship.devtrack.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,42 +17,36 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    // Build Add User REST API
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDto){
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDto) {
         UserDTO createdUser = userService.createUser(userDto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    // Build Get User REST API
-    @GetMapping("{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") long userId){
+    @GetMapping("{userId}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("userId") long userId) {
         UserDTO userDto = userService.getUserById(userId);
         return ResponseEntity.ok(userDto);
     }
 
-    // Build Get All Users REST API
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
-        List<UserDTO> usersDTO= userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> usersDTO = userService.getAllUsers();
         return ResponseEntity.ok(usersDTO);
     }
 
-    // Build Update User REST API
-    @PutMapping("{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable("id") long userId,
-                                              @RequestBody UserDTO updatedUser){
-        UserDTO userDto = userService.updateUser(userId,updatedUser);
+    @PutMapping("{userId}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable("userId") long userId,
+                                              @RequestBody UserDTO updatedUser) {
+        UserDTO userDto = userService.updateUser(userId, updatedUser);
         return ResponseEntity.ok(userDto);
     }
 
-    // Build Delete User REST API
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") long userId){
+    @DeleteMapping("{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable("userId") long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("User Deleted Successfully");
     }
-
 }

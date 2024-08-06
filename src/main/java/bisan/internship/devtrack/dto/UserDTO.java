@@ -18,7 +18,7 @@ public class UserDTO {  //we use UserDTO class to transfer the data between clie
     private String username;
 
     private String email;
-    private String password;
+    private String password;//should not stay here
 
     private String firstName;
     private String lastName;

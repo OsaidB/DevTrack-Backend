@@ -14,3 +14,12 @@ public class TestController {
     }
 
 }
+/*
+
+1- JPA Entity
+2- Repository
+3- dto and mapper
+4- service interface, and then service class
+5- Controller
+
+*/
