@@ -9,7 +9,7 @@ public class BoardMapper {
         return new BoardDTO(
                 board.getBoardId(),
                 board.getName(),
-                board.getProjecId().getProjectId(),
+                board.getProjectId().getProjectId(),
                 board.getCreatedAt(),
                 board.getUpdatedAt()
         );

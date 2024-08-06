@@ -55,7 +55,7 @@ public class BoardServiceImpl implements BoardService {
         Project project = projectRepo.findById(updatedBoard.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + updatedBoard.getProjectId()));
 
-        board.setProjecId(project);
+        board.setProjectId(project);
         board.setName(updatedBoard.getName());
         board.setCreatedAt(updatedBoard.getCreatedAt());
         board.setUpdatedAt(updatedBoard.getUpdatedAt());
