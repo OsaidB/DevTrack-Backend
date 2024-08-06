@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     private UserRepo userRepo;
 
     @Override
-    public ProjectMemberDTO createProjectMember(ProjectMemberDTO projectMemberDTO) {
+    public ProjectMemberDTO addProjectMember(ProjectMemberDTO projectMemberDTO) {
         Project project = projectRepo.findById(projectMemberDTO.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectMemberDTO.getProjectId()));
 
@@ -39,6 +40,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + projectMemberDTO.getUserId()));
 
         ProjectMember projectMember = ProjectMemberMapper.mapToProjectMemberEntity(projectMemberDTO, project, user);
+        projectMember.setJoinedAt(LocalDateTime.now()); // Set current time for joinedAt
         ProjectMember savedProjectMember = projectMemberRepo.save(projectMember);
 
         return ProjectMemberMapper.mapToProjectMemberDTO(savedProjectMember);
@@ -61,15 +63,15 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public ProjectMemberDTO updateProjectMember(Long projectMemberId, ProjectMemberDTO updatedProjectMember) {
+    public ProjectMemberDTO updateProjectMember(Long projectMemberId, ProjectMemberDTO updatedProjectMemberDTO) {
         ProjectMember projectMember = projectMemberRepo.findById(projectMemberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project member not found with id: " + projectMemberId));
 
-        projectMember.setRole(updatedProjectMember.getRole());
-        projectMember.setUpdatedAt(updatedProjectMember.getUpdatedAt());
+        // No role field anymore, update only joinedAt if needed
+        projectMember.setJoinedAt(updatedProjectMemberDTO.getJoinedAt());
 
-        ProjectMember updatedProjectMemberEntity = projectMemberRepo.save(projectMember);
-        return ProjectMemberMapper.mapToProjectMemberDTO(updatedProjectMemberEntity);
+        ProjectMember updatedProjectMember = projectMemberRepo.save(projectMember);
+        return ProjectMemberMapper.mapToProjectMemberDTO(updatedProjectMember);
     }
 
     @Override
@@ -77,5 +79,13 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         ProjectMember projectMember = projectMemberRepo.findById(projectMemberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project member not found with id: " + projectMemberId));
         projectMemberRepo.delete(projectMember);
+    }
+
+    @Override
+    public List<ProjectMemberDTO> getMembersByProjectId(Long projectId) {
+        List<ProjectMember> projectMembers = projectMemberRepo.findByProjectProjectId(projectId);
+        return projectMembers.stream()
+                .map(ProjectMemberMapper::mapToProjectMemberDTO)
+                .collect(Collectors.toList());
     }
 }

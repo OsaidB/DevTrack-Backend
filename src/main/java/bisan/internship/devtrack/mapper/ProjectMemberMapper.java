@@ -8,24 +8,28 @@ import bisan.internship.devtrack.model.entity.User;
 public class ProjectMemberMapper {
 
     public static ProjectMemberDTO mapToProjectMemberDTO(ProjectMember projectMember) {
+        if (projectMember == null) {
+            return null;
+        }
+
         return new ProjectMemberDTO(
                 projectMember.getProjectMemberId(),
-                projectMember.getProject().getProjectId(),
-                projectMember.getUser().getUserId(),
-                projectMember.getRole(),
-                projectMember.getCreatedAt(),
-                projectMember.getUpdatedAt()
+                projectMember.getProject() != null ? projectMember.getProject().getProjectId() : null,
+                projectMember.getUser() != null ? projectMember.getUser().getUserId() : null,
+                projectMember.getJoinedAt()
         );
     }
 
     public static ProjectMember mapToProjectMemberEntity(ProjectMemberDTO projectMemberDTO, Project project, User user) {
+        if (projectMemberDTO == null || project == null || user == null) {
+            return null;
+        }
+
         return new ProjectMember(
                 projectMemberDTO.getProjectMemberId(),
                 project,
                 user,
-                projectMemberDTO.getRole(),
-                projectMemberDTO.getCreatedAt(),
-                projectMemberDTO.getUpdatedAt()
+                projectMemberDTO.getJoinedAt()
         );
     }
 }

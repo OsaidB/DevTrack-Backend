@@ -15,7 +15,5 @@ public class ProjectMemberDTO {
     private Long projectMemberId;
     private Long projectId;
     private Long userId;
-    private String role;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime joinedAt;
 }

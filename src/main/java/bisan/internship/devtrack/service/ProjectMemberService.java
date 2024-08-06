@@ -5,9 +5,10 @@ import bisan.internship.devtrack.dto.ProjectMemberDTO;
 import java.util.List;
 
 public interface ProjectMemberService {
-    ProjectMemberDTO createProjectMember(ProjectMemberDTO projectMemberDTO);
+    ProjectMemberDTO addProjectMember(ProjectMemberDTO projectMemberDTO);
     ProjectMemberDTO getProjectMemberById(Long projectMemberId);
     List<ProjectMemberDTO> getAllProjectMembers();
-    ProjectMemberDTO updateProjectMember(Long projectMemberId, ProjectMemberDTO updatedProjectMember);
+    ProjectMemberDTO updateProjectMember(Long projectMemberId, ProjectMemberDTO updatedProjectMemberDTO);
     void deleteProjectMember(Long projectMemberId);
+    List<ProjectMemberDTO> getMembersByProjectId(Long projectId);
 }
