@@ -8,7 +8,11 @@ public interface ProjectMemberService {
     ProjectMemberDTO addProjectMember(ProjectMemberDTO projectMemberDTO);
     ProjectMemberDTO getProjectMemberById(Long projectMemberId);
     List<ProjectMemberDTO> getAllProjectMembers();
+
     ProjectMemberDTO updateProjectMember(Long projectMemberId, ProjectMemberDTO updatedProjectMemberDTO);
+
     void deleteProjectMember(Long projectMemberId);
+    void deleteProjectMemberFromProject(Long projectId, Long projectMemberId);
+
     List<ProjectMemberDTO> getMembersByProjectId(Long projectId);
 }

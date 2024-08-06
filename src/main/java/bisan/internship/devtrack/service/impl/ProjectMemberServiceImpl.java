@@ -87,6 +87,18 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
+    public void deleteProjectMemberFromProject(Long projectId, Long projectMemberId) {
+        ProjectMember projectMember = projectMemberRepo.findById(projectMemberId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project member not found with id: " + projectMemberId));
+
+        if (!projectMember.getProject().getProjectId().equals(projectId)) {
+            throw new ResourceNotFoundException("Project member not found in the specified project.");
+        }
+
+        projectMemberRepo.delete(projectMember);
+    }
+
+    @Override
     public List<ProjectMemberDTO> getMembersByProjectId(Long projectId) {
         List<ProjectMember> projectMembers = projectMemberRepo.findByProjectProjectId(projectId);
         return projectMembers.stream()

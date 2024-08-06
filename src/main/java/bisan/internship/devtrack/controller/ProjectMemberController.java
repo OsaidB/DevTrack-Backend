@@ -50,6 +50,15 @@ public class ProjectMemberController {
         return ResponseEntity.ok("Project Member Deleted Successfully");
     }
 
+    @DeleteMapping("/project/{projectId}/member/{projectMemberId}")
+    public ResponseEntity<String> deleteProjectMemberFromProject(
+            @PathVariable("projectId") Long projectId,
+            @PathVariable("projectMemberId") Long projectMemberId) {
+        projectMemberService.deleteProjectMemberFromProject(projectId, projectMemberId);
+        return ResponseEntity.ok("Project Member Deleted Successfully from Project");
+    }
+
+
     @GetMapping("/project/{projectId}")
     public ResponseEntity<List<ProjectMemberDTO>> getMembersByProjectId(@PathVariable("projectId") long projectId) {
         List<ProjectMemberDTO> projectMembersDTO = projectMemberService.getMembersByProjectId(projectId);
