@@ -3,6 +3,8 @@ package bisan.internship.devtrack.model.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
@@ -35,9 +37,11 @@ public class User {
     @Column(name = "is_team_leader")
     private Boolean isTeamLeader;//This: ex(account is a BackEnd TeamLeader)
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;//time of created this account
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;//any edit on account info
 }

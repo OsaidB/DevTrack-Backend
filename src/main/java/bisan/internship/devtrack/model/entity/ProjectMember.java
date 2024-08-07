@@ -2,6 +2,7 @@ package bisan.internship.devtrack.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +25,7 @@ public class ProjectMember {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @CreationTimestamp
     @Column(name = "joined_at")
     private LocalDateTime joinedAt;
 }
