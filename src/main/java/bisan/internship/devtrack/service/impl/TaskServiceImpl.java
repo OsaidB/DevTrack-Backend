@@ -30,6 +30,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private TaskMapper taskMapper; // Inject TaskMapper
+
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
         Project project = projectRepo.findById(taskDTO.getProjectId())
@@ -47,10 +50,10 @@ public class TaskServiceImpl implements TaskService {
                     .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
         }
 
-        Task task = TaskMapper.mapToTaskEntity(taskDTO, project, assignedTo);
+        Task task = taskMapper.toTaskEntity(taskDTO, project, assignedTo);
         Task savedTask = taskRepo.save(task);
 
-        return TaskMapper.mapToTaskDTO(savedTask);
+        return taskMapper.toTaskDTO(savedTask);
     }
 
     @Override
@@ -58,14 +61,14 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
 
-        return TaskMapper.mapToTaskDTO(task);
+        return taskMapper.toTaskDTO(task);
     }
 
     @Override
     public List<TaskDTO> getAllTasks() {
         List<Task> tasks = taskRepo.findAll();
         return tasks.stream()
-                .map(TaskMapper::mapToTaskDTO)
+                .map(taskMapper::toTaskDTO)
                 .collect(Collectors.toList());
     }
 
@@ -94,7 +97,7 @@ public class TaskServiceImpl implements TaskService {
         task.setAssignedTo(assignedTo);
 
         Task updatedTask = taskRepo.save(task);
-        return TaskMapper.mapToTaskDTO(updatedTask);
+        return taskMapper.toTaskDTO(updatedTask);
     }
 
     @Override
@@ -107,7 +110,7 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskDTO> getTasksByProjectId(long projectId) {
         List<Task> tasks = taskRepo.findByProjectProjectId(projectId);
         return tasks.stream()
-                .map(TaskMapper::mapToTaskDTO)
+                .map(taskMapper::toTaskDTO)
                 .collect(Collectors.toList());
     }
 
@@ -115,7 +118,7 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskDTO> getTasksByUserId(long userId) {
         List<Task> tasks = taskRepo.findByAssignedToUserId(userId);
         return tasks.stream()
-                .map(TaskMapper::mapToTaskDTO)
+                .map(taskMapper::toTaskDTO)
                 .collect(Collectors.toList());
     }
 }
