@@ -2,7 +2,14 @@ package bisan.internship.devtrack.repository;
 
 import bisan.internship.devtrack.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepo extends JpaRepository<User,Long> {
+import java.util.List;
 
+@Repository
+public interface UserRepo extends JpaRepository<User, Long> {
+
+    @Query("SELECT u FROM User u JOIN ProjectMember pm ON u.userId = pm.user.userId WHERE pm.project.projectId = :projectId")
+    List<User> findByProjectId(Long projectId);
 }
