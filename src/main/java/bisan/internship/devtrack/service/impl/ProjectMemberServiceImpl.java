@@ -105,4 +105,13 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
                 .map(ProjectMemberMapper::mapToProjectMemberDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteProjectMemberFromAllProjects(Long userId) {
+        List<ProjectMember> projectMembers = projectMemberRepo.findByUserUserId(userId);
+        if (projectMembers.isEmpty()) {
+            throw new ResourceNotFoundException("Project member not found with user id: " + userId);
+        }
+        projectMemberRepo.deleteAll(projectMembers);
+    }
 }

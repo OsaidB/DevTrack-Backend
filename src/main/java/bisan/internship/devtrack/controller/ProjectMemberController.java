@@ -44,10 +44,10 @@ public class ProjectMemberController {
         return ResponseEntity.ok(projectMemberDTO);
     }
 
-    @DeleteMapping("{projectMemberId}")
-    public ResponseEntity<String> deleteProjectMember(@PathVariable("projectMemberId") long projectMemberId) {
-        projectMemberService.deleteProjectMember(projectMemberId);
-        return ResponseEntity.ok("Project Member Deleted Successfully");
+    @DeleteMapping("{userId}")
+    public ResponseEntity<String> deleteProjectMember(@PathVariable("userId") long userId) {
+        projectMemberService.deleteProjectMemberFromAllProjects(userId);
+        return ResponseEntity.ok("Project Member Deleted Successfully from All Projects");
     }
 
     @DeleteMapping("/project/{projectId}/member/{projectMemberId}")

@@ -15,4 +15,7 @@ public interface ProjectMemberService {
     void deleteProjectMemberFromProject(Long projectId, Long projectMemberId);
 
     List<ProjectMemberDTO> getMembersByProjectId(Long projectId);
+
+    void deleteProjectMemberFromAllProjects(Long userId);
+
 }
