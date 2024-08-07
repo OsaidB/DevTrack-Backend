@@ -103,4 +103,19 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
         taskRepo.delete(task);
     }
+    @Override
+    public List<TaskDTO> getTasksByProjectId(long projectId) {
+        List<Task> tasks = taskRepo.findByProjectProjectId(projectId);
+        return tasks.stream()
+                .map(TaskMapper::mapToTaskDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskDTO> getTasksByUserId(long userId) {
+        List<Task> tasks = taskRepo.findByAssignedToUserId(userId);
+        return tasks.stream()
+                .map(TaskMapper::mapToTaskDTO)
+                .collect(Collectors.toList());
+    }
 }
