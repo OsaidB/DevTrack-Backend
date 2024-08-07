@@ -56,11 +56,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDTO updateComment(Long commentId ,CommentDTO updatedCommentDTO) {
-        User user = userRepo.findById(commentId)
+        User user = userRepo.findById(updatedCommentDTO.getCommentedBy())
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found" + updatedCommentDTO.getCommentedBy()));
         Task task = taskRepo.findById(updatedCommentDTO.getTaskId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task Not Found" + updatedCommentDTO.getTaskId()));
-        Comment comment = commentRepo.findById(updatedCommentDTO.getCommentId())
+        Comment comment = commentRepo.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment Not Found" + updatedCommentDTO.getCommentId()));
 
         comment.setCommentedBy(user);
