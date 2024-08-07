@@ -55,7 +55,7 @@ public class BoardServiceImpl implements BoardService {
         Project project = projectRepo.findById(updatedBoard.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + updatedBoard.getProjectId()));
 
-        board.setProjecId(project);
+        board.setProjectId(project);
         board.setName(updatedBoard.getName());
         board.setCreatedAt(updatedBoard.getCreatedAt());
         board.setUpdatedAt(updatedBoard.getUpdatedAt());
@@ -68,7 +68,7 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Long boardId) {
         Board board = boardRepo.findById(boardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + boardId));
-        boardRepo.deleteById(boardId);
+        boardRepo.delete(board);
     }
 
 }
