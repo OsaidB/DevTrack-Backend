@@ -20,11 +20,11 @@ public class Comment {
     private Long commentId;
 
     @ManyToOne
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", nullable = false)
     private Task taskId;
 
     @ManyToOne
-    @JoinColumn(name = "commented_by")
+    @JoinColumn(name = "commented_by", nullable = false)
     private User commentedBy;
 
     private String comment;

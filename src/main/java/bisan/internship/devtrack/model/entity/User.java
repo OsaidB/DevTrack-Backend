@@ -20,21 +20,22 @@ public class User {
 
     private String username;//userName for u
 
-    @Column(name = "email_id" ,nullable = true, unique = true)
+    @Column(name = "email_id" ,nullable = false, unique = true)
     private String email;//Email
 
-    @Column(name = "pass")
+    @Column(name = "pass", nullable = false)
     private String password;//password
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;//FirstName
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;//LastName
 
+    @Column(nullable = false)
     private String role;//BackEnd?FrontEnd?QA?...
 
-    @Column(name = "is_team_leader")
+    @Column(name = "is_team_leader", nullable = false)
     private Boolean isTeamLeader;//This: ex(account is a BackEnd TeamLeader)
 
     @CreationTimestamp
