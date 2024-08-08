@@ -2,39 +2,36 @@ package bisan.internship.devtrack.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "projects")
-public class Project {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "comments")
+public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectId;
+    private Long commentId;
 
-    @Column(nullable = false)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task taskId;
 
-    @Column(nullable = true)
-    private String description;
+    @ManyToOne
+    @JoinColumn(name = "commented_by", nullable = false)
+    private User commentedBy;
 
-//    @ManyToOne
-//    @JoinColumn(name = "created_by") //always created by admin
-//    private User createdBy;
+    private String comment;
 
     @CreationTimestamp
-    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

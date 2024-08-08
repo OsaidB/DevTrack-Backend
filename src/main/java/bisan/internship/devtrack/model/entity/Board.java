@@ -20,7 +20,7 @@ public class Board {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project projectId;
 
     @CreationTimestamp
