@@ -2,6 +2,7 @@ package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.TaskDTO;
 import bisan.internship.devtrack.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +19,8 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
-
     @PostMapping
-    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskDTO taskDTO) {
         TaskDTO createdTask = taskService.createTask(taskDTO);
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
@@ -48,12 +48,15 @@ public class TaskController {
         List<TaskDTO> tasks = taskService.getTasksByUserId(userId);
         return ResponseEntity.ok(tasks);
     }
-
     @PutMapping("{taskId}")
     public ResponseEntity<TaskDTO> updateTask(@PathVariable("taskId") long taskId,
-                                              @RequestBody TaskDTO updatedTaskDTO) {
-        TaskDTO taskDTO = taskService.updateTask(taskId, updatedTaskDTO);
-        return ResponseEntity.ok(taskDTO);
+                                              @Valid @RequestBody TaskDTO updatedTaskDTO) {
+        try {
+            TaskDTO taskDTO = taskService.updateTask(taskId, updatedTaskDTO);
+            return ResponseEntity.ok(taskDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null); // Adjust this response as needed
+        }
     }
 
     @DeleteMapping("{taskId}")

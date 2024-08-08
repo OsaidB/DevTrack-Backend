@@ -1,5 +1,6 @@
 package bisan.internship.devtrack.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TaskDTO {
     private Long taskId;
+    @NotNull(message = "Project ID cannot be null")
     private Long projectId;
+    @NotNull(message = "User ID cannot be null")
     private Long assignedToUserId;
     private String taskName;
     private String taskDescription;

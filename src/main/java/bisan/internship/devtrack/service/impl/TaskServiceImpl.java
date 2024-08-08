@@ -71,12 +71,14 @@ public class TaskServiceImpl implements TaskService {
                 .map(taskMapper::toTaskDTO)
                 .collect(Collectors.toList());
     }
-
     @Override
     public TaskDTO updateTask(Long taskId, TaskDTO updatedTaskDTO) {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
 
+        if (!task.getProject().getProjectId().equals(updatedTaskDTO.getProjectId())) {
+            throw new IllegalArgumentException("Changing the projectId is not allowed.");
+        }
         task.setTaskName(updatedTaskDTO.getTaskName());
         task.setTaskDescription(updatedTaskDTO.getTaskDescription());
         task.setStatus(updatedTaskDTO.getStatus());
