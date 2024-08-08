@@ -20,25 +20,28 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepo userRepo;
+    
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
-    public UserDTO createUser(UserDTO userDto) {
-        User user = UserMapper.mapToUserEntity(userDto);
+    public UserDTO createUser(UserDTO userDTO) {
+        User user = userMapper.toUserEntity(userDTO);
         User savedUser = userRepo.save(user);
-        return UserMapper.mapToUserDTO(savedUser);
+        return userMapper.toUserDTO(savedUser);
     }
 
     @Override
     public UserDTO getUserById(Long userId) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User is not exists with given id: " + userId));
-        return UserMapper.mapToUserDTO(user);
+        return userMapper.toUserDTO(user);
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepo.findAll();
-        return users.stream().map(UserMapper::mapToUserDTO).collect(Collectors.toList());
+        return users.stream().map(userMapper::toUserDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -57,7 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(updatedUser.getLastName());
 
         User updatedUserObj = userRepo.save(user);
-        return UserMapper.mapToUserDTO(updatedUserObj);
+        return userMapper.toUserDTO(updatedUserObj);
     }
 
     @Override

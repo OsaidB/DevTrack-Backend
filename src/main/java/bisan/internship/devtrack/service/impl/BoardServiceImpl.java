@@ -25,27 +25,30 @@ public class BoardServiceImpl implements BoardService {
     @Autowired
     private ProjectRepo projectRepo;
 
+    @Autowired
+    private BoardMapper boardMapper;
+
     @Override
     public BoardDTO createBoard(BoardDTO boardDTO) {
         Project project = projectRepo.findById(boardDTO.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + boardDTO.getProjectId()));
 
-        Board board = BoardMapper.mapToBoardEntity(boardDTO, project);
+        Board board = boardMapper.toBoardEntity(boardDTO);
         Board saveBoard = boardRepo.save(board);
-        return BoardMapper.mapToBoardDto(saveBoard);
+        return boardMapper.toBoardDTO(saveBoard);
     }
 
     @Override
     public BoardDTO getBoardById(Long boardId) {
         Board board = boardRepo.findById(boardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + boardId));
-        return BoardMapper.mapToBoardDto(board);
+        return boardMapper.toBoardDTO(board);
     }
 
     @Override
     public List<BoardDTO> getAllBoards() {
         List<Board> boards = boardRepo.findAll();
-        return boards.stream().map(BoardMapper::mapToBoardDto).collect(Collectors.toList());
+        return boards.stream().map(boardMapper::toBoardDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -61,7 +64,7 @@ public class BoardServiceImpl implements BoardService {
         board.setUpdatedAt(updatedBoard.getUpdatedAt());
 
         Board saveBoard = boardRepo.save(board);
-        return BoardMapper.mapToBoardDto(saveBoard);
+        return boardMapper.toBoardDTO(saveBoard);
     }
 
     @Override

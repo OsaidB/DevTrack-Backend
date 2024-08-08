@@ -50,7 +50,7 @@ public class TaskServiceImpl implements TaskService {
                     .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
         }
 
-        Task task = taskMapper.toTaskEntity(taskDTO, project, assignedTo);
+        Task task = taskMapper.toTaskEntity(taskDTO);
         Task savedTask = taskRepo.save(task);
 
         return taskMapper.toTaskDTO(savedTask);

@@ -20,25 +20,27 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProjectRepo projectRepo;
 
+    @Autowired
+    private ProjectMapper projectMapper;
     @Override
     public ProjectDTO createProject(ProjectDTO projectDTO) {
-        Project project = ProjectMapper.mapToProjectEntity(projectDTO);
+        Project project = projectMapper.toProjectEntity(projectDTO);
         Project savedProject = projectRepo.save(project);
-        return ProjectMapper.mapToProjectDTO(savedProject);
+        return projectMapper.toProjectDTO(savedProject);
     }
 
     @Override
     public ProjectDTO getProjectById(Long projectId) {
         Project project = projectRepo.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
-        return ProjectMapper.mapToProjectDTO(project);
+        return projectMapper.toProjectDTO(project);
     }
 
     @Override
     public List<ProjectDTO> getAllProjects() {
         List<Project> projects = projectRepo.findAll();
         return projects.stream()
-                .map(ProjectMapper::mapToProjectDTO)
+                .map(projectMapper::toProjectDTO)
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +54,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setUpdatedAt(updatedProject.getUpdatedAt());
 
         Project updatedProjectEntity = projectRepo.save(project);
-        return ProjectMapper.mapToProjectDTO(updatedProjectEntity);
+        return projectMapper.toProjectDTO(updatedProjectEntity);
     }
 
     @Override

@@ -4,32 +4,17 @@ import bisan.internship.devtrack.dto.ProjectMemberDTO;
 import bisan.internship.devtrack.model.entity.Project;
 import bisan.internship.devtrack.model.entity.ProjectMember;
 import bisan.internship.devtrack.model.entity.User;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
 
-public class ProjectMemberMapper {
+@Mapper(componentModel = "spring")
+public interface ProjectMemberMapper {
 
-    public static ProjectMemberDTO mapToProjectMemberDTO(ProjectMember projectMember) {
-        if (projectMember == null) {
-            return null;
-        }
+    ProjectMemberMapper INSTANCE = Mappers.getMapper(ProjectMemberMapper.class);
 
-        return new ProjectMemberDTO(
-                projectMember.getProjectMemberId(),
-                projectMember.getProject() != null ? projectMember.getProject().getProjectId() : null,
-                projectMember.getUser() != null ? projectMember.getUser().getUserId() : null,
-                projectMember.getJoinedAt()
-        );
-    }
+    ProjectMemberDTO toProjectMemberDTO(ProjectMember projectMember);
 
-    public static ProjectMember mapToProjectMemberEntity(ProjectMemberDTO projectMemberDTO, Project project, User user) {
-        if (projectMemberDTO == null || project == null || user == null) {
-            return null;
-        }
-
-        return new ProjectMember(
-                projectMemberDTO.getProjectMemberId(),
-                project,
-                user,
-                projectMemberDTO.getJoinedAt()
-        );
-    }
+    ProjectMember toProjectMemberEntity(ProjectMemberDTO projectMemberDTO);
 }

@@ -2,6 +2,7 @@ package bisan.internship.devtrack.service.impl;
 
 import bisan.internship.devtrack.dto.NotificationDTO;
 import bisan.internship.devtrack.exception.ResourceNotFoundException;
+import bisan.internship.devtrack.mapper.BoardMapper;
 import bisan.internship.devtrack.mapper.NotificationMapper;
 import bisan.internship.devtrack.model.entity.Notification;
 import bisan.internship.devtrack.model.entity.User;
@@ -25,28 +26,30 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
     @Override
     public NotificationDTO createNotification(NotificationDTO notificationDTO) {
         User user = userRepo.findById(notificationDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + notificationDTO.getNotificationId()));
 
-        Notification notification = NotificationMapper.mapToNotificationEntity(notificationDTO, user);
+        Notification notification = notificationMapper.toNotificationEntity(notificationDTO);
         Notification savedNotification = notificationRepo.save(notification);
 
-        return NotificationMapper.mapToNotificationDto(savedNotification);
+        return notificationMapper.  toNotificationDTO(savedNotification);
     }
 
     @Override
     public NotificationDTO getNotificationById(Long notificationId) {
         Notification notification = notificationRepo.findById(notificationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Notification not found with id: " + notificationId));
-        return NotificationMapper.mapToNotificationDto(notification);
+        return notificationMapper.toNotificationDTO(notification);
     }
 
     @Override
     public List<NotificationDTO> getAllNotifications(){
         List<Notification> notifications = notificationRepo.findAll();
-        return notifications.stream().map(NotificationMapper::mapToNotificationDto).collect(Collectors.toList());
+        return notifications.stream().map(notificationMapper::toNotificationDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -62,7 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setCreatedAt(updatedNotification.getCreatedAt());
 
         Notification saveNotification = notificationRepo.save(notification);
-        return NotificationMapper.mapToNotificationDto(saveNotification);
+        return notificationMapper.toNotificationDTO(saveNotification);
     }
 
     @Override

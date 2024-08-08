@@ -11,7 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
-
     TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);
 
     @Mappings({
@@ -24,5 +23,31 @@ public interface TaskMapper {
             @Mapping(source = "projectId", target = "project.projectId"),
             @Mapping(source = "assignedToUserId", target = "assignedTo.userId")
     })
-    Task toTaskEntity(TaskDTO taskDTO, Project project, User assignedTo);
+    Task toTaskEntity(TaskDTO taskDTO);
+
+    default Long mapProjectToId(Project project) {
+        return project == null ? null : project.getProjectId();
+    }
+
+    default Project mapIdToProject(Long projectId) {
+        if (projectId == null) {
+            return null;
+        }
+        Project project = new Project();
+        project.setProjectId(projectId);
+        return project;
+    }
+
+    default Long mapUserToId(User user) {
+        return user == null ? null : user.getUserId();
+    }
+
+    default User mapIdToUser(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        User user = new User();
+        user.setUserId(userId);
+        return user;
+    }
 }
