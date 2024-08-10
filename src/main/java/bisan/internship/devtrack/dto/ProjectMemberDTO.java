@@ -1,5 +1,7 @@
 package bisan.internship.devtrack.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ProjectMemberDTO {
     private Long projectMemberId;
+
+    @NotNull(message = "Project ID cannot be null")
     private Long projectId;
     private Long userId;
     private LocalDateTime joinedAt;
