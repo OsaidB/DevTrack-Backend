@@ -66,7 +66,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
         attachment.setUserId(user);
         attachment.setTaskId(task);
-        attachment.setCreatedAt(updateAttachmentDTO.getCreatedAt());
+//        attachment.setCreatedAt(updateAttachmentDTO.getCreatedAt());
         attachment.setFileURL(updateAttachmentDTO.getFileURL());
         attachment.setFileName(updateAttachmentDTO.getFileName());
 

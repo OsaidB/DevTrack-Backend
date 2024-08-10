@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User is not exists with given id: " + userId));
 
         user.setUpdatedAt(updatedUser.getUpdatedAt());
-        user.setCreatedAt(updatedUser.getCreatedAt());
+//        user.setCreatedAt(updatedUser.getCreatedAt());
         user.setEmail(updatedUser.getEmail());
         user.setPassword(updatedUser.getPassword());
         user.setRole(updatedUser.getRole());

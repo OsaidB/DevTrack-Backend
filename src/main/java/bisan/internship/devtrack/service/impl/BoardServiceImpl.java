@@ -60,7 +60,7 @@ public class BoardServiceImpl implements BoardService {
 
         board.setProjectId(project);
         board.setName(updatedBoard.getName());
-        board.setCreatedAt(updatedBoard.getCreatedAt());
+//        board.setCreatedAt(updatedBoard.getCreatedAt());
         board.setUpdatedAt(updatedBoard.getUpdatedAt());
 
         Board saveBoard = boardRepo.save(board);

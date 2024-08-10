@@ -76,7 +76,7 @@ public class ActivityServiceImpl implements ActivityService {
         activity.setUserId(user);
         activity.setTaskId(task);
         activity.setProjectId(project);
-        activity.setCreatedAt(updateActivityDTO.getCreatedAt());
+//        activity.setCreatedAt(updateActivityDTO.getCreatedAt());
 
         Activity savedActivity = activityRepo.save(activity);
         return ActivityMapper.mapToActivityDTO(savedActivity);

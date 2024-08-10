@@ -75,7 +75,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
                 .orElseThrow(() -> new ResourceNotFoundException("Project member not found with id: " + projectMemberId));
 
         // No role field anymore, update only joinedAt if needed
-        projectMember.setJoinedAt(updatedProjectMemberDTO.getJoinedAt());
+//        projectMember.setJoinedAt(updatedProjectMemberDTO.getJoinedAt());
 
         ProjectMember updatedProjectMember = projectMemberRepo.save(projectMember);
         return projectMemberMapper.toProjectMemberDTO(updatedProjectMember);

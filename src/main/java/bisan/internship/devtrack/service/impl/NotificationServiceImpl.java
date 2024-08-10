@@ -62,7 +62,7 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setUserId(user);
         notification.setIsRead(updatedNotification.getIsRead());
         notification.setMessage(updatedNotification.getMessage());
-        notification.setCreatedAt(updatedNotification.getCreatedAt());
+//        notification.setCreatedAt(updatedNotification.getCreatedAt());
 
         Notification saveNotification = notificationRepo.save(notification);
         return notificationMapper.toNotificationDTO(saveNotification);
