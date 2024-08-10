@@ -16,7 +16,7 @@ public class Attachment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long attachmentId;
+    private Long attachmentId;
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
