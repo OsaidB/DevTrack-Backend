@@ -2,6 +2,7 @@ package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.NotificationDTO;
 import bisan.internship.devtrack.service.NotificationService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @PostMapping
-    public ResponseEntity<NotificationDTO> createNotification(@RequestBody NotificationDTO notificationDTO) {
+    public ResponseEntity<NotificationDTO> createNotification(@Valid  @RequestBody NotificationDTO notificationDTO) {
         NotificationDTO createdNotification = notificationService.createNotification(notificationDTO);
         return new ResponseEntity<>(createdNotification, HttpStatus.CREATED);
     }
@@ -38,7 +39,7 @@ public class NotificationController {
 
     @PutMapping("{notificationId}")
     public ResponseEntity<NotificationDTO> updateNotification(@PathVariable("notificationId") long notificationId
-                                                                ,@RequestBody NotificationDTO updatedNotificationDTO) {
+                                                                ,@Valid @RequestBody NotificationDTO updatedNotificationDTO) {
         NotificationDTO notificationDTO = notificationService.updateNotification(notificationId, updatedNotificationDTO);
         return ResponseEntity.ok(notificationDTO);
     }

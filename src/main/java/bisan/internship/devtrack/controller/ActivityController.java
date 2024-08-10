@@ -3,6 +3,7 @@ package bisan.internship.devtrack.controller;
 import bisan.internship.devtrack.dto.ActivityDTO;
 import bisan.internship.devtrack.model.entity.Activity;
 import bisan.internship.devtrack.service.ActivityService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @PostMapping
-    public ResponseEntity<ActivityDTO> createActivity(@RequestBody ActivityDTO activityDTO) {
+    public ResponseEntity<ActivityDTO> createActivity(@Valid @RequestBody ActivityDTO activityDTO) {
         ActivityDTO createActivity = activityService.createActivity(activityDTO);
         return new ResponseEntity<>(createActivity, HttpStatus.CREATED);
     }
@@ -39,7 +40,7 @@ public class ActivityController {
 
     @PutMapping("{activityId}")
     public ResponseEntity<ActivityDTO> updateActivity(@PathVariable("activityId") long activityId
-                                                        ,@RequestBody ActivityDTO updateActivityDTO) {
+                                                        ,@Valid @RequestBody ActivityDTO updateActivityDTO) {
         ActivityDTO activityDTO = activityService.updateActivity(activityId, updateActivityDTO);
         return ResponseEntity.ok(activityDTO);
     }

@@ -2,6 +2,7 @@ package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.CommentDTO;
 import bisan.internship.devtrack.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<CommentDTO> createComment(@Valid  @RequestBody CommentDTO commentDTO) {
         CommentDTO createdComment = commentService.createComment(commentDTO);
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
@@ -38,7 +39,7 @@ public class CommentController {
 
     @PutMapping("{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable("commentId") long commentId
-                                                    ,@RequestBody CommentDTO updatedCommentDTO) {
+                                                    ,@Valid @RequestBody CommentDTO updatedCommentDTO) {
         CommentDTO commentDTO = commentService.updateComment(commentId, updatedCommentDTO);
         return ResponseEntity.ok(commentDTO);
     }

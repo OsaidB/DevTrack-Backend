@@ -2,6 +2,7 @@ package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.ProjectDTO;
 import bisan.internship.devtrack.service.ProjectService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class ProjectController {
     private ProjectService projectService;
 
     @PostMapping
-    public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
+    public ResponseEntity<ProjectDTO> createProject(@Valid  @RequestBody ProjectDTO projectDTO) {
         ProjectDTO createdProject = projectService.createProject(projectDTO);
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
@@ -39,7 +40,7 @@ public class ProjectController {
 
     @PutMapping("{projectId}")
     public ResponseEntity<ProjectDTO> updateProject(@PathVariable("projectId") long projectId,
-                                                    @RequestBody ProjectDTO updatedProject) {
+                                                    @Valid @RequestBody ProjectDTO updatedProject) {
         ProjectDTO projectDTO = projectService.updateProject(projectId, updatedProject);
         return ResponseEntity.ok(projectDTO);
     }

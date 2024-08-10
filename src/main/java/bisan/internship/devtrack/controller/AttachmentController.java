@@ -2,6 +2,7 @@ package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.AttachmentDTO;
 import bisan.internship.devtrack.service.AttachmentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class AttachmentController {
     private final AttachmentService attachmentService;
 
     @PostMapping
-    public ResponseEntity<AttachmentDTO> createAttachment(@RequestBody AttachmentDTO attachmentDTO) {
+    public ResponseEntity<AttachmentDTO> createAttachment(@Valid  @RequestBody AttachmentDTO attachmentDTO) {
         AttachmentDTO createAttachment = attachmentService.createAttachment(attachmentDTO);
         return new ResponseEntity<>(createAttachment, HttpStatus.CREATED);
     }
@@ -39,7 +40,7 @@ public class AttachmentController {
 
     @PutMapping("{attachmentId}")
     public ResponseEntity<AttachmentDTO> updateAttachment(@PathVariable("attachmentId") long attachmentId
-                                                            ,@RequestBody AttachmentDTO updateAttachmentDTO) {
+                                                            ,@Valid @RequestBody AttachmentDTO updateAttachmentDTO) {
         AttachmentDTO attachmentDTO = attachmentService.updateAttachment(attachmentId, updateAttachmentDTO);
         return ResponseEntity.ok(attachmentDTO);
     }

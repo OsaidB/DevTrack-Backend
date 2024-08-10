@@ -2,6 +2,7 @@ package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.UserDTO;
 import bisan.internship.devtrack.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDto) {
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDto) {
         UserDTO createdUser = userService.createUser(userDto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
@@ -38,7 +39,7 @@ public class UserController {
 
     @PutMapping("{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable("userId") long userId,
-                                              @RequestBody UserDTO updatedUser) {
+                                              @Valid  @RequestBody UserDTO updatedUser) {
         UserDTO userDto = userService.updateUser(userId, updatedUser);
         return ResponseEntity.ok(userDto);
     }

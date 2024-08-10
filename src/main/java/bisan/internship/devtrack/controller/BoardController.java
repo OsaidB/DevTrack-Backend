@@ -2,6 +2,7 @@ package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.BoardDTO;
 import bisan.internship.devtrack.service.BoardService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<BoardDTO> createBoard(@Valid  @RequestBody BoardDTO boardDTO) {
         BoardDTO createdBoard = boardService.createBoard(boardDTO);
         return new ResponseEntity<>(createdBoard, HttpStatus.CREATED);
     }
@@ -39,7 +40,7 @@ public class BoardController {
 
     @PutMapping("{boardId}")
     public ResponseEntity<BoardDTO> updateBoard(@PathVariable("boardId") long boardId,
-                                                @RequestBody BoardDTO updatedDTO) {
+                                                @Valid @RequestBody BoardDTO updatedDTO) {
         BoardDTO boardDto = boardService.updateBoard(boardId, updatedDTO);
         return ResponseEntity.ok(boardDto);
     }
