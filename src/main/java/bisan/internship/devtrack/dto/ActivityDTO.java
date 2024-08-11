@@ -25,7 +25,8 @@ public class ActivityDTO {
     private Long taskId;
 
     @NotNull(message = "Action cannot be null")
-    @Size(max = 255, message = "Action must be less than 255 characters")
+//    @Size(max = 255, message = "Action must be less than 255 characters")
+//    @Pattern(regexp = "create|update|delete", message = "Action must be one of 'create', 'update', 'delete'")
     private String action;
 
     private LocalDateTime createdAt;

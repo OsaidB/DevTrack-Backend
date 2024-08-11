@@ -24,7 +24,13 @@ public class Board {
     private Project projectId;
 
     @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
