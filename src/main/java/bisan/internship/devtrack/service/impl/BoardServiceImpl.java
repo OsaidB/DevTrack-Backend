@@ -65,6 +65,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public List<BoardDTO> getBoardsByProjectId(Long projectId) {
+        Project project = projectRepo.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
+        List<Board> boards = boardRepo.findByProjectId(project);
+        return boards.stream().map(boardMapper::toBoardDTO).collect(Collectors.toList());
+    }
+
+    @Override
     public BoardDTO updateBoard(Long boardId, BoardDTO updatedBoard) {
         Board board = boardRepo.findById(boardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + boardId));
