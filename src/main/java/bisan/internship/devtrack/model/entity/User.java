@@ -12,34 +12,35 @@ import org.hibernate.annotations.UpdateTimestamp;
 @AllArgsConstructor
 @Entity //to make this class as a JPA Entity
 @Table(name="users")
-@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
-    private Long userId;//Id
+    private Long userId;
 
-    private String username;//userName for u
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Column(name = "email_id" ,nullable = false, unique = true)
-    private String email;//Email
+    private String email;
 
     @Column(name = "pass", nullable = false)
-    private String password;//password
+    private String password;
 
     @Column(name = "first_name", nullable = false)
-    private String firstName;//FirstName
+    private String firstName;
 
     @Column(name = "last_name", nullable = false)
-    private String lastName;//LastName
+    private String lastName;
 
-    @Column(nullable = false)
-    private String role;//BackEnd?FrontEnd?QA?...
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role  role;//BackEnd?FrontEnd?QA?...
 
     @Column(name = "is_team_leader", nullable = false)
     private Boolean isTeamLeader;//This: ex(account is a BackEnd TeamLeader)
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(name = "created_at",updatable = false)
     private LocalDateTime createdAt;//time of created this account
 
     @UpdateTimestamp

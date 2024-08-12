@@ -3,7 +3,9 @@ package bisan.internship.devtrack.service.impl;
 import bisan.internship.devtrack.dto.UserDTO;
 import bisan.internship.devtrack.exception.ResourceNotFoundException;
 import bisan.internship.devtrack.mapper.UserMapper;
+import bisan.internship.devtrack.model.entity.Role;
 import bisan.internship.devtrack.model.entity.User;
+import bisan.internship.devtrack.repository.RoleRepo;
 import bisan.internship.devtrack.repository.UserRepo;
 import bisan.internship.devtrack.service.UserService;
 import lombok.AllArgsConstructor;
@@ -20,47 +22,61 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepo userRepo;
-    
+
+//    @Autowired
+//    private UserMapper userMapper;
+
     @Autowired
-    private UserMapper userMapper;
+    private RoleRepo roleRepo;
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        User user = userMapper.toUserEntity(userDTO);
+        Role role = roleRepo.findByRoleName(userDTO.getRole());
+        if (role == null) {
+            throw new RuntimeException("Role not found");
+        }
+
+        User user = UserMapper.INSTANCE.toUserEntity(userDTO);
+        user.setRole(role);
         User savedUser = userRepo.save(user);
-        return userMapper.toUserDTO(savedUser);
+        return UserMapper.INSTANCE.toUserDTO(savedUser);
     }
 
     @Override
     public UserDTO getUserById(Long userId) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User is not exists with given id: " + userId));
-        return userMapper.toUserDTO(user);
+        return UserMapper.INSTANCE.toUserDTO(user);
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepo.findAll();
-        return users.stream().map(userMapper::toUserDTO).collect(Collectors.toList());
+        return users.stream().map(UserMapper.INSTANCE::toUserDTO).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO updateUser(Long userId, UserDTO updatedUser) {
         User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User is not exists with given id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User does not exist with the given id: " + userId));
+
+        // Fetch the Role entity from the database
+        Role role = roleRepo.findByRoleName(updatedUser.getRole());
+        if (role == null) {
+            throw new RuntimeException("Role not found");
+        }
 
         user.setUpdatedAt(updatedUser.getUpdatedAt());
-//        user.setCreatedAt(updatedUser.getCreatedAt());
         user.setEmail(updatedUser.getEmail());
         user.setPassword(updatedUser.getPassword());
-        user.setRole(updatedUser.getRole());
+        user.setRole(role); // Set the Role entity
         user.setIsTeamLeader(updatedUser.getIsTeamLeader());
         user.setUsername(updatedUser.getUsername());
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
 
         User updatedUserObj = userRepo.save(user);
-        return userMapper.toUserDTO(updatedUserObj);
+        return UserMapper.INSTANCE.toUserDTO(updatedUserObj);
     }
 
     @Override

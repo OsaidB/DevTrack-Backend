@@ -7,10 +7,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Table(name = "boards")
 public class Board {
     @Id
@@ -20,8 +21,12 @@ public class Board {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project projectId;
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Project project;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
