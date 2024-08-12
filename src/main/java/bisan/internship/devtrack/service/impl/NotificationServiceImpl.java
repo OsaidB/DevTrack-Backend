@@ -57,7 +57,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = notificationRepo.findById(notificationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Notification not found with id: " + notificationId));
         User user = userRepo.findById(updatedNotification.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + updatedNotification.getNotificationId()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + updatedNotification.getUserId()));
 
         notification.setUserId(user);
         notification.setIsRead(updatedNotification.getIsRead());

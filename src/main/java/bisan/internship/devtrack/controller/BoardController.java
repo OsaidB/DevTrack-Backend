@@ -1,6 +1,7 @@
 package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.BoardDTO;
+import bisan.internship.devtrack.repository.BoardRepo;
 import bisan.internship.devtrack.service.BoardService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,8 @@ public class BoardController {
 
     @Autowired
     private final BoardService boardService;
+    @Autowired
+    private BoardRepo boardRepo;
 
     @PostMapping
     public ResponseEntity<BoardDTO> createBoard(@Valid  @RequestBody BoardDTO boardDTO) {
@@ -35,6 +38,12 @@ public class BoardController {
     @GetMapping
     public ResponseEntity<List<BoardDTO>> getAllBoards() {
         List<BoardDTO> boardDTO = boardService.getAllBoards();
+        return ResponseEntity.ok(boardDTO);
+    }
+
+    @GetMapping("projects/{projectId}")
+    public ResponseEntity<List<BoardDTO>> getBoardsByProject(@PathVariable("projectId") long projectId) {
+        List<BoardDTO> boardDTO = boardService.getBoardsByProjectId(projectId);
         return ResponseEntity.ok(boardDTO);
     }
 
