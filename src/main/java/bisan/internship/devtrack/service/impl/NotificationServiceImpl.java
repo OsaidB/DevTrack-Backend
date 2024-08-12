@@ -26,30 +26,30 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private NotificationMapper notificationMapper;
+//    @Autowired
+//    private NotificationMapper notificationMapper;
     @Override
     public NotificationDTO createNotification(NotificationDTO notificationDTO) {
         User user = userRepo.findById(notificationDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + notificationDTO.getNotificationId()));
 
-        Notification notification = notificationMapper.toNotificationEntity(notificationDTO);
+        Notification notification = NotificationMapper.INSTANCE.toNotificationEntity(notificationDTO);
         Notification savedNotification = notificationRepo.save(notification);
 
-        return notificationMapper.  toNotificationDTO(savedNotification);
+        return NotificationMapper.INSTANCE.toNotificationDTO(savedNotification);
     }
 
     @Override
     public NotificationDTO getNotificationById(Long notificationId) {
         Notification notification = notificationRepo.findById(notificationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Notification not found with id: " + notificationId));
-        return notificationMapper.toNotificationDTO(notification);
+        return NotificationMapper.INSTANCE.toNotificationDTO(notification);
     }
 
     @Override
     public List<NotificationDTO> getAllNotifications(){
         List<Notification> notifications = notificationRepo.findAll();
-        return notifications.stream().map(notificationMapper::toNotificationDTO).collect(Collectors.toList());
+        return notifications.stream().map(NotificationMapper.INSTANCE::toNotificationDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
 //        notification.setCreatedAt(updatedNotification.getCreatedAt());
 
         Notification saveNotification = notificationRepo.save(notification);
-        return notificationMapper.toNotificationDTO(saveNotification);
+        return NotificationMapper.INSTANCE.toNotificationDTO(saveNotification);
     }
 
     @Override

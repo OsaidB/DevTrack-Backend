@@ -31,8 +31,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private ProjectMemberMapper projectMemberMapper;
+//    @Autowired
+//    private ProjectMemberMapper projectMemberMapper;
     @Override
     public ProjectMemberDTO addProjectMember(ProjectMemberDTO projectMemberDTO) {
         Project project = projectRepo.findById(projectMemberDTO.getProjectId())
@@ -47,10 +47,10 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
             throw new IllegalArgumentException("User is already a member of the project.");
         }
 
-        ProjectMember projectMember = projectMemberMapper.toProjectMemberEntity(projectMemberDTO);
+        ProjectMember projectMember = ProjectMemberMapper.INSTANCE.toProjectMemberEntity(projectMemberDTO);
         ProjectMember savedProjectMember = projectMemberRepo.save(projectMember);
 
-        return projectMemberMapper.toProjectMemberDTO(savedProjectMember);
+        return ProjectMemberMapper.INSTANCE.toProjectMemberDTO(savedProjectMember);
     }
 
     @Override
@@ -58,14 +58,14 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         ProjectMember projectMember = projectMemberRepo.findById(projectMemberId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project member not found with id: " + projectMemberId));
 
-        return projectMemberMapper.toProjectMemberDTO(projectMember);
+        return ProjectMemberMapper.INSTANCE.toProjectMemberDTO(projectMember);
     }
 
     @Override
     public List<ProjectMemberDTO> getAllProjectMembers() {
         List<ProjectMember> projectMembers = projectMemberRepo.findAll();
         return projectMembers.stream()
-                .map(projectMemberMapper::toProjectMemberDTO)
+                .map(ProjectMemberMapper.INSTANCE::toProjectMemberDTO)
                 .collect(Collectors.toList());
     }
 
@@ -78,7 +78,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 //        projectMember.setJoinedAt(updatedProjectMemberDTO.getJoinedAt());
 
         ProjectMember updatedProjectMember = projectMemberRepo.save(projectMember);
-        return projectMemberMapper.toProjectMemberDTO(updatedProjectMember);
+        return ProjectMemberMapper.INSTANCE.toProjectMemberDTO(updatedProjectMember);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     public List<ProjectMemberDTO> getMembersByProjectId(Long projectId) {
         List<ProjectMember> projectMembers = projectMemberRepo.findByProjectProjectId(projectId);
         return projectMembers.stream()
-                .map(projectMemberMapper::toProjectMemberDTO)
+                .map(ProjectMemberMapper.INSTANCE::toProjectMemberDTO)
                 .collect(Collectors.toList());
     }
 
