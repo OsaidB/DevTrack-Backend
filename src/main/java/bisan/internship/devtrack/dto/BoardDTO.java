@@ -15,7 +15,9 @@ import lombok.Setter;
 public class BoardDTO {
     private Long boardId;
 
-    @NotNull(message = "Board name cannot be null")
+//    @NotNull(message = "Role cant be null")
+//    private Long roleId;
+
     @Size(max = 100, message = "Board name must be less than 100 characters")
     private String name;
 

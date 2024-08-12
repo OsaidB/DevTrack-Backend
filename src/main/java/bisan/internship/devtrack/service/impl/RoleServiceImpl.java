@@ -1,6 +1,7 @@
 package bisan.internship.devtrack.service.impl;
 
 import bisan.internship.devtrack.dto.RoleDTO;
+import bisan.internship.devtrack.exception.ResourceNotFoundException;
 import bisan.internship.devtrack.mapper.RoleMapper;
 import bisan.internship.devtrack.model.entity.Role;
 import bisan.internship.devtrack.repository.RoleRepo;
@@ -18,15 +19,28 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDTO createRole(RoleDTO roleDTO) {
-        Role role = new Role();
-        role.setRoleName(roleDTO.getRoleName());
+        Role role = RoleMapper.INSTANCE.toRoleEntity(roleDTO);
         Role savedRole = roleRepo.save(role);
         return RoleMapper.INSTANCE.toRoleDTO(savedRole);
+    }
+
+    @Override
+    public RoleDTO getRoleById(Long roleId) {
+        Role role = roleRepo.findById(roleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found" + roleId));
+        return RoleMapper.INSTANCE.toRoleDTO(role);
     }
 
     @Override
     public List<RoleDTO> getAllRoles() {
         List<Role> roles = roleRepo.findAll();
         return roles.stream().map(RoleMapper.INSTANCE::toRoleDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteRole(Long roleId) {
+        Role role = roleRepo.findById(roleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found" + roleId));
+        roleRepo.delete(role);
     }
 }
