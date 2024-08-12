@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface BoardRepo extends JpaRepository<Board, Long> {
-    List<Board> findByProjectProjectId(long projectId);
+    List<Board> findByProjectProjectId(Long projectId);
 }
