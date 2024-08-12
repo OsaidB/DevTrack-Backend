@@ -21,7 +21,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
-    private Task taskId;
+    private Task task;
 
     @ManyToOne
     @JoinColumn(name = "commented_by", nullable = false)

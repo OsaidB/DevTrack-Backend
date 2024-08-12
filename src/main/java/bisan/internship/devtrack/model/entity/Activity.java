@@ -20,15 +20,15 @@ public class Activity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
-    private Project projectId;
+    private Project project;
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
-    private Task taskId;
+    private Task task;
 
     private String action;
 

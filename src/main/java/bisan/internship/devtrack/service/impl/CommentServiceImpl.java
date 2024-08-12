@@ -66,7 +66,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setCommentedBy(user);
         comment.setUpdatedAt(updatedCommentDTO.getUpdatedAt());
         comment.setComment(updatedCommentDTO.getComment());
-        comment.setTaskId(task);
+        comment.setTask(task);
 //        comment.setCreatedAt(updatedCommentDTO.getCreatedAt());
 
         Comment savedComment = commentRepo.save(comment);

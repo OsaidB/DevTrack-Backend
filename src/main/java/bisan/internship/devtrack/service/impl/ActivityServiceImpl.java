@@ -73,9 +73,9 @@ public class ActivityServiceImpl implements ActivityService {
                 .orElseThrow(() -> new ResourceNotFoundException("Activity Not Found" + activityId));
 
         activity.setAction(updateActivityDTO.getAction());
-        activity.setUserId(user);
-        activity.setTaskId(task);
-        activity.setProjectId(project);
+        activity.setUser(user);
+        activity.setTask(task);
+        activity.setProject(project);
 //        activity.setCreatedAt(updateActivityDTO.getCreatedAt());
 
         Activity savedActivity = activityRepo.save(activity);

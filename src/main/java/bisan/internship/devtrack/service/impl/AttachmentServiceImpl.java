@@ -64,8 +64,8 @@ public class AttachmentServiceImpl implements AttachmentService {
         Attachment attachment = attachmentRepo.findById(attachmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Attachment not found with id: " + attachmentId));
 
-        attachment.setUserId(user);
-        attachment.setTaskId(task);
+        attachment.setUser(user);
+        attachment.setTask(task);
 //        attachment.setCreatedAt(updateAttachmentDTO.getCreatedAt());
         attachment.setFileURL(updateAttachmentDTO.getFileURL());
         attachment.setFileName(updateAttachmentDTO.getFileName());

@@ -19,11 +19,11 @@ public class Attachment {
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
-    private Task taskId;
+    private Task task;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     private String fileName;
     private String fileURL;

@@ -9,7 +9,7 @@ public class CommentMapper {
     public static CommentDTO mapToCommentDTO(Comment comment) {
         return new CommentDTO(
                 comment.getCommentId(),
-                comment.getTaskId().getTaskId(),
+                comment.getTask().getTaskId(),
                 comment.getCommentedBy().getUserId(),
                 comment.getComment(),
                 comment.getCreatedAt(),
