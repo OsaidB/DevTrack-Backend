@@ -25,7 +25,7 @@ public class Board {
     private Role role;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "project_id",nullable = false)
     private Project project;
 
     @CreationTimestamp
