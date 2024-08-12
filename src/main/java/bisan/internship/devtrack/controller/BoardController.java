@@ -24,8 +24,11 @@ public class BoardController {
     private BoardRepo boardRepo;
 
     @PostMapping
-    public ResponseEntity<BoardDTO> createBoard(@Valid  @RequestBody BoardDTO boardDTO) {
-        BoardDTO createdBoard = boardService.createBoard(boardDTO);
+    public ResponseEntity<BoardDTO> createBoard(@Valid  @RequestBody BoardDTO boardDTO,long roleId) {
+        Long projectId = boardDTO.getProjectId();
+//        Long roleId = boardDTO.getRoleId();
+
+        BoardDTO createdBoard = boardService.createBoard(projectId,roleId);
         return new ResponseEntity<>(createdBoard, HttpStatus.CREATED);
     }
 

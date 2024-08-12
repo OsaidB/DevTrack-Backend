@@ -5,7 +5,7 @@ import bisan.internship.devtrack.dto.BoardDTO;
 import java.util.List;
 
 public interface BoardService {
-    BoardDTO createBoard(BoardDTO boardDto);
+    BoardDTO createBoard(Long projectId, Long roleId);
     BoardDTO getBoardById(Long boardId);
     List<BoardDTO> getAllBoards();
     List<BoardDTO> getBoardsByProjectId(Long projectId);

@@ -18,6 +18,7 @@ public class ProjectMemberDTO {
 
     @NotNull(message = "Project ID cannot be null")
     private Long projectId;
+    @NotNull(message = "User ID cannot be null")
     private Long userId;
     private LocalDateTime joinedAt;
 }
