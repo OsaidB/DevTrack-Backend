@@ -12,13 +12,16 @@ import bisan.internship.devtrack.dto.UserDTO;
 import bisan.internship.devtrack.model.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    @Mapping(source = "role.roleName", target = "role")
     UserDTO toUserDTO(User user);
 
+    @Mapping(target = "role", ignore = true) // The role will be set in the service
     User toUserEntity(UserDTO userDTO);
 }
