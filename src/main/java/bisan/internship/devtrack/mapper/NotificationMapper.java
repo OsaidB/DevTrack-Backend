@@ -16,18 +16,17 @@ public interface NotificationMapper {
     NotificationMapper INSTANCE = Mappers.getMapper(NotificationMapper.class);
 
     @Mappings({
-            @Mapping(source = "notificationId", target = "notificationId"),
-            @Mapping(source = "message", target = "message"),
-            @Mapping(source = "isRead", target = "isRead"),
-            @Mapping(source = "createdAt", target = "createdAt")
+            @Mapping(source = "user.userId", target = "userId")
+//            @Mapping(source = "notificationId", target = "notificationId"),
+//            @Mapping(source = "message", target = "message"),
+//            @Mapping(source = "isRead", target = "isRead"),
+//            @Mapping(source = "createdAt", target = "createdAt")
     })
     NotificationDTO toNotificationDTO(Notification notification);
 
     @Mappings({
-            @Mapping(source = "notificationId", target = "notificationId"),
-            @Mapping(source = "message", target = "message"),
-            @Mapping(source = "isRead", target = "isRead"),
-            @Mapping(source = "createdAt", target = "createdAt")
+            @Mapping(source = "userId", target = "user.userId")
+
     })
     Notification toNotificationEntity(NotificationDTO notificationDTO);
 
