@@ -14,9 +14,18 @@ public interface BoardMapper {
 
 
 
+    @Mappings({
+//            @Mapping(target = "role", ignore = true),
+            @Mapping(source = "project.projectId", target = "projectId")
+
+    })
     BoardDTO toBoardDTO(Board board);
 
-    @Mapping(target = "role", ignore = true) // The role will be set in the service
+    @Mappings({
+            @Mapping(target = "role", ignore = true),
+            @Mapping(source = "projectId", target = "project.projectId")
+
+    }) // The role will be set in the service
     Board toBoardEntity(BoardDTO boardDTO);
 
     default Long map(Project project) {

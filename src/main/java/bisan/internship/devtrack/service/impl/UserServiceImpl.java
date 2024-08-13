@@ -31,13 +31,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        Role role = roleRepo.findByRoleName(userDTO.getRole());
+        Role role = roleRepo.findById(userDTO.getRole())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id : " + userDTO.getRole()));
         if (role == null) {
             throw new RuntimeException("Role not found");
         }
 
         User user = UserMapper.INSTANCE.toUserEntity(userDTO);
         user.setRole(role);
+
         User savedUser = userRepo.save(user);
         return UserMapper.INSTANCE.toUserDTO(savedUser);
     }
@@ -61,7 +63,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with the given id: " + userId));
 
         // Fetch the Role entity from the database
-        Role role = roleRepo.findByRoleName(updatedUser.getRole());
+        Role role = roleRepo.findById(updatedUser.getRole())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id : " + updatedUser.getRole()));
         if (role == null) {
             throw new RuntimeException("Role not found");
         }

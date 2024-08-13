@@ -20,16 +20,14 @@ public class BoardController {
 
     @Autowired
     private final BoardService boardService;
-    @Autowired
-    private BoardRepo boardRepo;
 
     @PostMapping("{roleId}")
-    public ResponseEntity<BoardDTO> createBoard(@Valid  @RequestBody BoardDTO boardDTO
+    public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody BoardDTO boardDTO
                                                 ,@PathVariable("roleId") long roleId) {
-        Long projectId = boardDTO.getProjectId();
+//        long projectId = boardDTO.getProjectId();
 //        Long roleId = boardDTO.getRoleId();
 
-        BoardDTO createdBoard = boardService.createBoard(projectId,roleId);
+        BoardDTO createdBoard = boardService.createBoard(boardDTO.getProjectId(),roleId);
         return new ResponseEntity<>(createdBoard, HttpStatus.CREATED);
     }
 

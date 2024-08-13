@@ -19,7 +19,7 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(source = "role.roleName", target = "role")
+    @Mapping(source = "role.roleId", target = "role")
     UserDTO toUserDTO(User user);
 
     @Mapping(target = "role", ignore = true) // The role will be set in the service

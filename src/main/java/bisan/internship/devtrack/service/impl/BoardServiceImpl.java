@@ -41,10 +41,12 @@ public class BoardServiceImpl implements BoardService {
 
         Board board = new Board();
         board.setName(role.getRoleName());
+        board.setRole(role);
 
-        board.setProject(projectRepo.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId)));
+        Project project = projectRepo.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
 
+        board.setProject(project);
         board.setCreatedAt(LocalDateTime.now());
         board.setUpdatedAt(LocalDateTime.now());
         Board saveBoard = boardRepo.save(board);

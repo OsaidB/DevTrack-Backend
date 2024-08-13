@@ -26,7 +26,7 @@ public class UserDTO {  //we use UserDTO class to transfer the data between clie
     private String lastName;
 
     @NotNull(message = "The Role cant be null")
-    private String role; // Update to reflect the role name
+    private Long role; // Update to reflect the role name
 
     private Boolean isTeamLeader;
     private LocalDateTime createdAt;
