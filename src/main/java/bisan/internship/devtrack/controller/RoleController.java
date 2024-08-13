@@ -1,14 +1,13 @@
 package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.RoleDTO;
-import bisan.internship.devtrack.model.entity.Role;
 import bisan.internship.devtrack.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @CrossOrigin("*")
@@ -17,6 +16,7 @@ import java.util.List;
 @RequestMapping("/api/roles")
 public class RoleController {
 
+    @Autowired
     private RoleService roleService;
 
     @PostMapping
