@@ -1,7 +1,6 @@
 package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.ActivityDTO;
-import bisan.internship.devtrack.model.entity.Activity;
 import bisan.internship.devtrack.service.ActivityService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -31,6 +30,12 @@ public class ActivityController {
         ActivityDTO getActivityById = activityService.getActivityById(activityId);
         return ResponseEntity.ok(getActivityById);
     }
+
+//    @GetMapping("/tasks/{taskId}")
+//    public ResponseEntity<List<ActivityDTO>> getActivityByTaskId(@PathVariable("taskId") long taskId) {
+//        List<ActivityDTO> activityDTO = activityService.getActivitiesByTaskId(taskId);
+//        return ResponseEntity.ok(activityDTO);
+//    }
 
     @GetMapping
     public ResponseEntity<List<ActivityDTO>> getAllActivities() {
