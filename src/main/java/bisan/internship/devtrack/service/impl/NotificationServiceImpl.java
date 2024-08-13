@@ -2,7 +2,6 @@ package bisan.internship.devtrack.service.impl;
 
 import bisan.internship.devtrack.dto.NotificationDTO;
 import bisan.internship.devtrack.exception.ResourceNotFoundException;
-import bisan.internship.devtrack.mapper.BoardMapper;
 import bisan.internship.devtrack.mapper.NotificationMapper;
 import bisan.internship.devtrack.model.entity.Notification;
 import bisan.internship.devtrack.model.entity.User;
@@ -49,6 +48,15 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<NotificationDTO> getAllNotifications(){
         List<Notification> notifications = notificationRepo.findAll();
+        return notifications.stream().map(NotificationMapper.INSTANCE::toNotificationDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NotificationDTO> getNotificationsByUserId(Long userId) {
+        userRepo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        List<Notification> notifications = notificationRepo.findNotificationByUserUserId(userId);
         return notifications.stream().map(NotificationMapper.INSTANCE::toNotificationDTO).collect(Collectors.toList());
     }
 

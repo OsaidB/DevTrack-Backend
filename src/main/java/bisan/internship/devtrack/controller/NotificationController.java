@@ -17,7 +17,7 @@ import java.util.List;
 public class NotificationController {
 
     @Autowired
-    private final NotificationService notificationService;
+    private NotificationService notificationService;
 
     @PostMapping
     public ResponseEntity<NotificationDTO> createNotification(@Valid  @RequestBody NotificationDTO notificationDTO) {
@@ -34,6 +34,12 @@ public class NotificationController {
     @GetMapping
     public ResponseEntity<List<NotificationDTO>> getAllNotifications() {
         List<NotificationDTO> notifications = notificationService.getAllNotifications();
+        return ResponseEntity.ok(notifications);
+    }
+
+    @GetMapping("users/{userId}")
+    public ResponseEntity<List<NotificationDTO>> getNotificationsByUserId(@PathVariable("userId") long userId) {
+        List<NotificationDTO> notifications = notificationService.getNotificationsByUserId(userId);
         return ResponseEntity.ok(notifications);
     }
 
