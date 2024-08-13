@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ActivityRepo extends JpaRepository<Activity, Long> {
-//    List<Activity> getActivitiesByTaskId(Long taskId);
+    List<Activity> getActivitiesByTaskTaskId(Long taskId);
 }

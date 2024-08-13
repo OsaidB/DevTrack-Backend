@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @CrossOrigin("*")
@@ -31,11 +30,11 @@ public class ActivityController {
         return ResponseEntity.ok(getActivityById);
     }
 
-//    @GetMapping("/tasks/{taskId}")
-//    public ResponseEntity<List<ActivityDTO>> getActivityByTaskId(@PathVariable("taskId") long taskId) {
-//        List<ActivityDTO> activityDTO = activityService.getActivitiesByTaskId(taskId);
-//        return ResponseEntity.ok(activityDTO);
-//    }
+    @GetMapping("/tasks/{taskId}")
+    public ResponseEntity<List<ActivityDTO>> getActivityByTaskId(@PathVariable("taskId") long taskId) {
+        List<ActivityDTO> activityDTO = activityService.getActivitiesByTaskId(taskId);
+        return ResponseEntity.ok(activityDTO);
+    }
 
     @GetMapping
     public ResponseEntity<List<ActivityDTO>> getAllActivities() {

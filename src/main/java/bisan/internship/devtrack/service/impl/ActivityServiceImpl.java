@@ -55,13 +55,13 @@ public class ActivityServiceImpl implements ActivityService {
         return ActivityMapper.mapToActivityDTO(activity);
     }
 
-//    @Override
-//    public List<ActivityDTO> getActivitiesByTaskId(Long taskId){
-//        taskRepo.findById(taskId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Task Not Found" + taskId));
-//        List<Activity> activities = activityRepo.getActivitiesByTaskId(taskId);
-//        return activities.stream().map(ActivityMapper::mapToActivityDTO).collect(Collectors.toList());
-//    }
+    @Override
+    public List<ActivityDTO> getActivitiesByTaskId(Long taskId){
+        taskRepo.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task Not Found" + taskId));
+        List<Activity> activities = activityRepo.getActivitiesByTaskTaskId(taskId);
+        return activities.stream().map(ActivityMapper::mapToActivityDTO).collect(Collectors.toList());
+    }
 
     @Override
     public List<ActivityDTO> getAllActivities(){
