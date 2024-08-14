@@ -37,6 +37,12 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
+    @GetMapping("tasks/{taskId}")
+    public ResponseEntity<List<CommentDTO>> getCommentsByTaskId(@PathVariable("taskId") long taskId) {
+        List<CommentDTO> comments = commentService.getCommentsByTaskId(taskId);
+        return ResponseEntity.ok(comments);
+    }
+
     @PutMapping("{commentId}")
     public ResponseEntity<CommentDTO> updateComment(@PathVariable("commentId") long commentId
                                                     ,@Valid @RequestBody CommentDTO updatedCommentDTO) {

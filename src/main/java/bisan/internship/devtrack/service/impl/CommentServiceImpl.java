@@ -55,6 +55,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public  List<CommentDTO> getCommentsByTaskId(Long taskId){
+        taskRepo.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task Not Found" + taskId));
+        List<Comment> comments = commentRepo.findByTaskTaskId(taskId);
+        return comments.stream().map(CommentMapper::mapToCommentDTO).collect(Collectors.toList());
+    }
+
+    @Override
     public CommentDTO updateComment(Long commentId ,CommentDTO updatedCommentDTO) {
         User user = userRepo.findById(updatedCommentDTO.getCommentedBy())
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found" + updatedCommentDTO.getCommentedBy()));
