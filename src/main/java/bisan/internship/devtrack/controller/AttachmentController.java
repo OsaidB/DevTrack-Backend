@@ -38,6 +38,12 @@ public class AttachmentController {
         return ResponseEntity.ok(getAllAttachment);
     }
 
+    @GetMapping("tasks/{taskId}")
+    public ResponseEntity<List<AttachmentDTO>> getAttachmentsByTaskId(@PathVariable("taskId") long taskId) {
+        List<AttachmentDTO> getAllAttachment = attachmentService.getAttachmentsByTaskId(taskId);
+        return ResponseEntity.ok(getAllAttachment);
+    }
+
     @PutMapping("{attachmentId}")
     public ResponseEntity<AttachmentDTO> updateAttachment(@PathVariable("attachmentId") long attachmentId
                                                             ,@Valid @RequestBody AttachmentDTO updateAttachmentDTO) {

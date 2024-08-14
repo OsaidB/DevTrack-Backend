@@ -56,6 +56,14 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
+    public List<AttachmentDTO> getAttachmentsByTaskId(Long taskId) {
+        taskRepo.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
+        List<Attachment> attachments = attachmentRepo.findAttachmentByTaskTaskId(taskId);
+        return attachments.stream().map(AttachmentMapper::mapToAttachmentDto).collect(Collectors.toList());
+    }
+
+    @Override
     public AttachmentDTO updateAttachment(Long attachmentId, AttachmentDTO updateAttachmentDTO) {
         User user = userRepo.findById(updateAttachmentDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + updateAttachmentDTO.getUserId()));
