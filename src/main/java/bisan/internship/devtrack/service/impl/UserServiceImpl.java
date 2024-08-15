@@ -58,6 +58,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDTO> getUsersByRoleId(Long roleId){
+        roleRepo.findById(roleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id : " + roleId));
+        List<User> users = userRepo.findUsersByRoleRoleId(roleId);
+        return users.stream().map(UserMapper.INSTANCE::toUserDTO).collect(Collectors.toList());
+    }
+
+    @Override
     public UserDTO updateUser(Long userId, UserDTO updatedUser) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with the given id: " + userId));

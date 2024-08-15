@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface UserRepo extends JpaRepository<User, Long> {
 
+    List<User> findUsersByRoleRoleId(Long roleId);
     @Query("SELECT u FROM User u JOIN ProjectMember pm ON u.userId = pm.user.userId WHERE pm.project.projectId = :projectId")
     List<User> findByProjectId(Long projectId);
 }

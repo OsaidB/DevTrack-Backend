@@ -37,6 +37,12 @@ public class UserController {
         return ResponseEntity.ok(usersDTO);
     }
 
+    @GetMapping("roles/{roleId}")
+    public ResponseEntity<List<UserDTO>> getUsersByRoleId(@PathVariable("roleId") long roleId) {
+        List<UserDTO> usersDTO = userService.getUsersByRoleId(roleId);
+        return ResponseEntity.ok(usersDTO);
+    }
+
     @PutMapping("{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable("userId") long userId,
                                               @Valid  @RequestBody UserDTO updatedUser) {
