@@ -1,6 +1,7 @@
 package bisan.internship.devtrack.service.impl;
 
 import bisan.internship.devtrack.dto.BoardDTO;
+import bisan.internship.devtrack.dto.RoleDTO;
 import bisan.internship.devtrack.exception.ResourceNotFoundException;
 import bisan.internship.devtrack.mapper.BoardMapper;
 import bisan.internship.devtrack.model.entity.Board;
@@ -30,6 +31,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private RoleRepo roleRepo;
+
+    @Autowired
+    private final RoleServiceImpl roleService; // Inject RoleServiceImpl
+
+    private final RoleConfigurationService roleConfigurationService;
+
 //    @Autowired
 //    private BoardMapper boardMapper;
 
@@ -38,19 +45,23 @@ public class BoardServiceImpl implements BoardService {
 
         Role role = roleRepo.findById(roleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+//        if (role == null) {
+//            throw new RuntimeException("Role not found");
+//        }
 
         Board board = new Board();
         board.setName(role.getRoleName());
         board.setRole(role);
 
         Project project = projectRepo.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + projectId));
 
         board.setProject(project);
         board.setCreatedAt(LocalDateTime.now());
         board.setUpdatedAt(LocalDateTime.now());
-        Board saveBoard = boardRepo.save(board);
-        return BoardMapper.INSTANCE.toBoardDTO(saveBoard);
+
+        Board savedBoard = boardRepo.save(board);
+        return BoardMapper.INSTANCE.toBoardDTO(savedBoard);
     }
 
     @Override
@@ -96,6 +107,40 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepo.findById(boardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + boardId));
         boardRepo.delete(board);
+    }
+
+    @Override
+    public void addDefaultBoards(long projectId) {
+        // Create default boards
+        // Example IDs for default roles
+//        Long backendRoleId = RoleConstants.BACKEND_ROLE_ID;
+//        Long frontendRoleId = RoleConstants.FRONTEND_ROLE_ID;
+//        Long qaRoleId = RoleConstants.QA_ROLE_ID;
+
+        // Get or create roles
+        RoleDTO backendRole = roleService.getOrCreateRole("Backend");
+        RoleDTO frontendRole = roleService.getOrCreateRole("Frontend");
+        RoleDTO qaRole = roleService.getOrCreateRole("QA");
+
+        // Save role IDs to configuration
+        roleConfigurationService.setBackendRoleId(backendRole.getRoleId());
+        roleConfigurationService.setFrontendRoleId(frontendRole.getRoleId());
+        roleConfigurationService.setQaRoleId(qaRole.getRoleId());
+
+//        if (!roleService.isRoleName(backendRoleId, "Backend")) {
+//            throw new RuntimeException("Invalid role ID for Backend");
+//        }
+//        if (!roleService.isRoleName(frontendRoleId, "Frontend")) {
+//            throw new RuntimeException("Invalid role ID for Frontend");
+//        }
+//        if (!roleService.isRoleName(qaRoleId, "QA")) {
+//            throw new RuntimeException("Invalid role ID for QA");
+//        }
+
+
+        createBoard(projectId, backendRole.getRoleId());
+        createBoard(projectId, frontendRole.getRoleId());
+        createBoard(projectId, qaRole.getRoleId());
     }
 
 }

@@ -33,6 +33,22 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
         Role role = roleRepo.findById(userDTO.getRole())
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found with id : " + userDTO.getRole()));
+        //        //        Role role = roleRepo.findByRoleName(userDTO.getRole());
+//
+//        Role role = roleRepo.findById(userDTO.getRole())
+//                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+//
+//        if (role == null) {
+//            throw new RuntimeException("Role not found");
+//        }
+//
+//        User user = new User();
+//        user.setRole(role);
+//
+//        UserMapper.INSTANCE.toUserEntity(userDTO);
+////        user.setRole(role);
+
+//        Role role = roleRepo.findByRoleName(userDTO.getRole());
         if (role == null) {
             throw new RuntimeException("Role not found");
         }

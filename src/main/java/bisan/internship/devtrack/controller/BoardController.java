@@ -61,4 +61,11 @@ public class BoardController {
         boardService.deleteBoard(boardId);
         return ResponseEntity.ok("Board Deleted Successfully");
     }
+
+    @PostMapping("projects/{projectId}/default")
+    public ResponseEntity<String> addDefaultBoards(@PathVariable("projectId") long projectId) {
+        boardService.addDefaultBoards(projectId);
+        return ResponseEntity.ok("Default Boards Added Successfully");
+    }
+
 }
