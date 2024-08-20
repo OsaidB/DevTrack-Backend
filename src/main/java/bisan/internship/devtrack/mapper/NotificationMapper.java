@@ -31,7 +31,7 @@ public interface NotificationMapper {
     Notification toNotificationEntity(NotificationDTO notificationDTO);
 
     default Long map(User user) {
-        return user == null ? null : user.getUserId();
+        return user == null ? null : user.getId();
     }
 
     default User map(Long userId) {
@@ -40,6 +40,7 @@ public interface NotificationMapper {
         }
         User user = new User();
         user.setUserId(userId);
+//        user.setId(userId);
         return user;
     }
 }

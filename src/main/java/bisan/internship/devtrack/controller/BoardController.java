@@ -3,6 +3,8 @@ package bisan.internship.devtrack.controller;
 import bisan.internship.devtrack.dto.BoardDTO;
 import bisan.internship.devtrack.repository.BoardRepo;
 import bisan.internship.devtrack.service.BoardService;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,8 @@ public class BoardController {
     }
 
     @PostMapping("projects/{projectId}/default")
+//    @PermitAll
+//    @RolesAllowed({"ADMIN","ACCOUNT_MANGER"})
     public ResponseEntity<String> addDefaultBoards(@PathVariable("projectId") long projectId) {
         boardService.addDefaultBoards(projectId);
         return ResponseEntity.ok("Default Boards Added Successfully");

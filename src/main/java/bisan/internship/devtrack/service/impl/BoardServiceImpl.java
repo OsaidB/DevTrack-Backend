@@ -6,10 +6,10 @@ import bisan.internship.devtrack.exception.ResourceNotFoundException;
 import bisan.internship.devtrack.mapper.BoardMapper;
 import bisan.internship.devtrack.model.entity.Board;
 import bisan.internship.devtrack.model.entity.Project;
-import bisan.internship.devtrack.model.entity.Role;
+import bisan.internship.devtrack.model.entity.FunctionalRole;
 import bisan.internship.devtrack.repository.BoardRepo;
 import bisan.internship.devtrack.repository.ProjectRepo;
-import bisan.internship.devtrack.repository.RoleRepo;
+import bisan.internship.devtrack.repository.FuncRoleRepo;
 import bisan.internship.devtrack.service.BoardService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +30,10 @@ public class BoardServiceImpl implements BoardService {
     private ProjectRepo projectRepo;
 
     @Autowired
-    private RoleRepo roleRepo;
+    private FuncRoleRepo funcRoleRepo;
 
     @Autowired
-    private final RoleServiceImpl roleService; // Inject RoleServiceImpl
+    private final FuncRoleServiceImpl FuncRoleService; // Inject RoleServiceImpl
 
     private final RoleConfigurationService roleConfigurationService;
 
@@ -43,7 +43,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDTO createBoard(Long projectId, Long roleId) {
 
-        Role role = roleRepo.findById(roleId)
+        FunctionalRole role = funcRoleRepo.findById(roleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 //        if (role == null) {
 //            throw new RuntimeException("Role not found");
@@ -118,9 +118,9 @@ public class BoardServiceImpl implements BoardService {
 //        Long qaRoleId = RoleConstants.QA_ROLE_ID;
 
         // Get or create roles
-        RoleDTO backendRole = roleService.getOrCreateRole("Backend");
-        RoleDTO frontendRole = roleService.getOrCreateRole("Frontend");
-        RoleDTO qaRole = roleService.getOrCreateRole("QA");
+        RoleDTO backendRole = FuncRoleService.getOrCreateRole("Backend");
+        RoleDTO frontendRole = FuncRoleService.getOrCreateRole("Frontend");
+        RoleDTO qaRole = FuncRoleService.getOrCreateRole("QA");
 
         // Save role IDs to configuration
         roleConfigurationService.setBackendRoleId(backendRole.getRoleId());

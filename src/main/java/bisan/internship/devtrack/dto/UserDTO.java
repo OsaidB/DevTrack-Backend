@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
 
@@ -20,10 +19,10 @@ public class UserDTO {  //we use UserDTO class to transfer the data between clie
     private String username;
 
     private String email;
-    private String password;//should not stay here
+    private String hashedPassword;//should not stay here
 
-    private String firstName;
-    private String lastName;
+//    private String firstName;
+//    private String lastName;
 
     @NotNull(message = "The Role cant be null")
     private Long role; // Update to reflect the role name

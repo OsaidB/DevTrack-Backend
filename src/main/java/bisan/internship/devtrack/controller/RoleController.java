@@ -1,7 +1,8 @@
 package bisan.internship.devtrack.controller;
 
 import bisan.internship.devtrack.dto.RoleDTO;
-import bisan.internship.devtrack.service.RoleService;
+import bisan.internship.devtrack.service.FuncRoleService;
+//import bisan.internship.devtrack.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.List;
 public class RoleController {
 
     @Autowired
-    private RoleService roleService;
+    private FuncRoleService roleService;
 
     @PostMapping
     public ResponseEntity<RoleDTO> createRole(@Valid @RequestBody RoleDTO roleDTO) {

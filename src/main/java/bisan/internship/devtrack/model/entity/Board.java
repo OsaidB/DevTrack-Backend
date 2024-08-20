@@ -22,7 +22,7 @@ public class Board {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    private FunctionalRole role;
 
     @ManyToOne
     @JoinColumn(name = "project_id",nullable = false)
