@@ -123,9 +123,9 @@ public class BoardServiceImpl implements BoardService {
         RoleDTO qaRole = FuncRoleService.getOrCreateRole("QA");
 
         // Save role IDs to configuration
-        roleConfigurationService.setBackendRoleId(backendRole.getRoleId());
-        roleConfigurationService.setFrontendRoleId(frontendRole.getRoleId());
-        roleConfigurationService.setQaRoleId(qaRole.getRoleId());
+        roleConfigurationService.setBackendRoleId(backendRole.getFuncRoleId());
+        roleConfigurationService.setFrontendRoleId(frontendRole.getFuncRoleId());
+        roleConfigurationService.setQaRoleId(qaRole.getFuncRoleId());
 
 //        if (!roleService.isRoleName(backendRoleId, "Backend")) {
 //            throw new RuntimeException("Invalid role ID for Backend");
@@ -138,9 +138,9 @@ public class BoardServiceImpl implements BoardService {
 //        }
 
 
-        createBoard(projectId, backendRole.getRoleId());
-        createBoard(projectId, frontendRole.getRoleId());
-        createBoard(projectId, qaRole.getRoleId());
+        createBoard(projectId, backendRole.getFuncRoleId());
+        createBoard(projectId, frontendRole.getFuncRoleId());
+        createBoard(projectId, qaRole.getFuncRoleId());
     }
 
 }

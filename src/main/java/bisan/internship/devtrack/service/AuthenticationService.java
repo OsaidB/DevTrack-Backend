@@ -6,10 +6,10 @@ package bisan.internship.devtrack.service;
 
 import bisan.internship.devtrack.dto.request.AuthenticationRequest;
 import bisan.internship.devtrack.dto.response.AuthenticationResponse;
-import bisan.internship.devtrack.model.entity.entity.User;
+import bisan.internship.devtrack.model.entity.entity.User_2;
 
 public interface AuthenticationService {
     AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
     AuthenticationResponse refreshToken(String token);
-    User registerUser(AuthenticationRequest authenticationRequest);
+    User_2 registerUser(AuthenticationRequest authenticationRequest);
 }

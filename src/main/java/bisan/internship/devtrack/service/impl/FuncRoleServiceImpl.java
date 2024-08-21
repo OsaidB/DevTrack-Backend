@@ -26,7 +26,7 @@ public class FuncRoleServiceImpl implements FuncRoleService {
         FunctionalRole savedRole = funcRoleRepo.save(role);
 
         // Update the RoleConfigurationService with the new ID
-        updateRoleConstants(roleDTO.getRoleName(), savedRole.getRoleId());
+        updateRoleConstants(roleDTO.getRoleName(), savedRole.getFuncRoleId());
 
         return RoleMapper.INSTANCE.toRoleDTO(savedRole);
     }

@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
-        FunctionalRole role = funcRoleRepo.findById(userDTO.getRole())
-                .orElseThrow(() -> new ResourceNotFoundException("FunctionalRole not found with id : " + userDTO.getRole()));
+        FunctionalRole role = funcRoleRepo.findById(userDTO.getFunctionalRoleId())
+                .orElseThrow(() -> new ResourceNotFoundException("FunctionalRole not found with id : " + userDTO.getFunctionalRoleId()));
         //        //        Role role = FuncRoleRepo.findByRoleName(userDTO.getRole());
 //
 //        Role role = FuncRoleRepo.findById(userDTO.getRole())
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = UserMapper.INSTANCE.toUserEntity(userDTO);
-        user.setRole(role);
+        user.setFuncRole(role);
 
         User savedUser = userRepo.save(user);
         return UserMapper.INSTANCE.toUserDTO(savedUser);
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> getUsersByRoleId(Long roleId){
         funcRoleRepo.findById(roleId)
                 .orElseThrow(() -> new ResourceNotFoundException("FunctionalRole not found with id : " + roleId));
-        List<User> users = userRepo.findUsersByRoleRoleId(roleId);
+        List<User> users = userRepo.findUsersByFuncRoleFuncRoleId(roleId);
         return users.stream().map(UserMapper.INSTANCE::toUserDTO).collect(Collectors.toList());
     }
 
@@ -113,8 +113,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with the given id: " + userId));
 
         // Fetch the FunctionalRole entity from the database
-        FunctionalRole role = funcRoleRepo.findById(updatedUser.getRole())
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id : " + updatedUser.getRole()));
+        FunctionalRole role = funcRoleRepo.findById(updatedUser.getFunctionalRoleId())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id : " + updatedUser.getFunctionalRoleId()));
         if (role == null) {
             throw new RuntimeException("FunctionalRole not found");
         }
@@ -122,16 +122,16 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedAt(updatedUser.getUpdatedAt());
         user.setEmail(updatedUser.getEmail());
 
-//        user.setPassword(updatedUser.getPassword());
-        user.setHashedPassword(updatedUser.getHashedPassword());
+        user.setPassword(updatedUser.getPassword());
+//        user.setHash(updatedUser.getHashedPassword());
 
-        user.setRole(role); // Set the FuncRole entity
+        user.setFuncRole(role); // Set the FuncRole entity
         user.setIsTeamLeader(updatedUser.getIsTeamLeader());
         user.setUsername(updatedUser.getUsername());
 
-//        user.setFirstName(updatedUser.getFirstName());
+        user.setFirstName(updatedUser.getFirstName());
 
-//        user.setLastName(updatedUser.getLastName());
+        user.setLastName(updatedUser.getLastName());
 
         User updatedUserObj = userRepo.save(user);
         return UserMapper.INSTANCE.toUserDTO(updatedUserObj);

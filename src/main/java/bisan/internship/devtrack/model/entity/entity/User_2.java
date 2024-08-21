@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User extends BaseEntity {
+public class User_2 extends BaseEntity {
 
   private static final long serialVersionUID = 2353528370345499815L;
 

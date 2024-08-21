@@ -9,9 +9,9 @@ package bisan.internship.devtrack.service.impl;
 //import com.javatab.service.AuthenticationService;
 import bisan.internship.devtrack.dto.request.AuthenticationRequest;
 import bisan.internship.devtrack.dto.response.AuthenticationResponse;
-import bisan.internship.devtrack.model.entity.entity.User;
+import bisan.internship.devtrack.model.entity.entity.User_2;
 import bisan.internship.devtrack.model.security.SecurityUser;
-import bisan.internship.devtrack.repository.UserRepo;
+import bisan.internship.devtrack.repository.UserRepo2;
 import bisan.internship.devtrack.security.TokenUtils;
 import bisan.internship.devtrack.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
@@ -36,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
-    private final UserRepo userRepository;
+    private final UserRepo2 userRepo2;
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
@@ -65,16 +64,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User registerUser(AuthenticationRequest authenticationRequest) {
+    public User_2 registerUser(AuthenticationRequest authenticationRequest) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(authenticationRequest.getPassword());
-        User newUser = User.builder()
+        User_2 newUser2 = User_2.builder()
                 .username(authenticationRequest.getUsername())
                 .password(hashedPassword)
                 .email(authenticationRequest.getEmail())
                 .lastPasswordReset(new Date())
                 .authorities("ADMIN")
                 .build();
-        return userRepository.save(newUser);
+        return userRepo2.save(newUser2);
     }
 }

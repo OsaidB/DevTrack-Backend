@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class FunctionalRole {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roleId;
+    private Long funcRoleId;
 
     @Column(nullable = false, unique = true)
     private String roleName;

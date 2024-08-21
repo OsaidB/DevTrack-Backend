@@ -1,6 +1,6 @@
 # DevTrack Backend
 
-DevTrack is a web application designed for developers to manage tasks and projects effectively. It provides functionality similar to Trello and Jira but is focused solely on development tasks. The backend of this application is built using Spring Boot and provides RESTful APIs for managing projects, tasks, and user roles.
+DevTrack is a web application designed for developers to manage tasks and projects effectively. It provides functionality similar to Trello and Jira but is focused solely on development tasks. The backend of this application is built using Spring Boot and provides RESTful APIs for managing projects, tasks, and user2 roles.
 
 ## Table of Contents
 
@@ -88,10 +88,10 @@ The application should now be running at `http://localhost:8080`.
 ## API Endpoints
 
 - `GET /api/users` - Retrieve all users
-- `POST /api/users` - Create a new user
-- `GET /api/users/{id}` - Retrieve a user by ID
-- `PUT /api/users/{id}` - Update a user by ID
-- `DELETE /api/users/{id}` - Delete a user by ID
+- `POST /api/users` - Create a new user2
+- `GET /api/users/{id}` - Retrieve a user2 by ID
+- `PUT /api/users/{id}` - Update a user2 by ID
+- `DELETE /api/users/{id}` - Delete a user2 by ID
 - `GET /api/projects` - Retrieve all projects
 - `POST /api/projects` - Create a new project
 - `GET /api/projects/{id}` - Retrieve a project by ID

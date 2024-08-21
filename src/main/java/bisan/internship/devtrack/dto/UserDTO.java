@@ -19,13 +19,13 @@ public class UserDTO {  //we use UserDTO class to transfer the data between clie
     private String username;
 
     private String email;
-    private String hashedPassword;//should not stay here
+    private String password;//should not stay here
 
-//    private String firstName;
-//    private String lastName;
+    private String firstName;
+    private String lastName;
 
     @NotNull(message = "The Role cant be null")
-    private Long role; // Update to reflect the role name
+    private Long functionalRoleId; // Update to reflect the role name
 
     private Boolean isTeamLeader;
     private LocalDateTime createdAt;

@@ -1,7 +1,9 @@
 package bisan.internship.devtrack.configuration;
 
-import com.javatab.security.AuthenticationTokenFilter;
-import com.javatab.security.EntryPointUnauthorizedHandler;
+//import com.javatab.security.AuthenticationTokenFilter;
+//import com.javatab.security.EntryPointUnauthorizedHandler;
+import bisan.internship.devtrack.security.AuthenticationTokenFilter;
+import bisan.internship.devtrack.security.EntryPointUnauthorizedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

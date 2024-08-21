@@ -23,7 +23,7 @@ public class TaskAssignmentService {
         }
 
         // Check if the assignedUser is in the same role as the teamLeader
-        if (!teamLeader.getRole().equals(assignedUser.getRole())) {
+        if (!teamLeader.getFuncRole().equals(assignedUser.getFuncRole())) {
 //            throw new UnauthorizedException("Team leader can only assign tasks to members of their team.");
         }
 
