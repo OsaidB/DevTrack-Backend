@@ -1,6 +1,5 @@
 package bisan.internship.devtrack.dto.request;
 
-//import bisan.internship.devtrack.model.entity.base.ModelBase;
 import bisan.internship.devtrack.model.base.ModelBase;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

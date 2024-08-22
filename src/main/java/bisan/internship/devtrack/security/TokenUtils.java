@@ -1,6 +1,5 @@
 package bisan.internship.devtrack.security;
 
-//import com.javatab.model.security.SecurityUser;
 import bisan.internship.devtrack.model.security.SecurityUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,11 +14,15 @@ import java.util.Map;
 
 @Component
 public class TokenUtils {
+//a utility class
+// designed to handle JSON Web Tokens (JWTs)
+// for authentication and authorization purposes.
 
-  private final String AUDIENCE_UNKNOWN   = "unknown";
+//  private final String AUDIENCE_UNKNOWN   = "unknown";
   private final String AUDIENCE_WEB       = "web";
-  private final String AUDIENCE_MOBILE    = "mobile";
-  private final String AUDIENCE_TABLET    = "tablet";
+
+//  private final String AUDIENCE_MOBILE    = "mobile";
+//  private final String AUDIENCE_TABLET    = "tablet";
 
   @Value("${javatab.token.secret}")
   private String secret;
@@ -102,20 +105,22 @@ public class TokenUtils {
   }
 
   private String generateAudience(String device) {
-    String audience = this.AUDIENCE_UNKNOWN;
-    if (device.equalsIgnoreCase(this.AUDIENCE_WEB)) {
-      audience = this.AUDIENCE_WEB;
-    } else if (device.equalsIgnoreCase(this.AUDIENCE_TABLET)) {
-      audience = AUDIENCE_TABLET;
-    } else if (device.equalsIgnoreCase(this.AUDIENCE_MOBILE)) {
-      audience = AUDIENCE_MOBILE;
-    }
+//    String audience = this.AUDIENCE_UNKNOWN;
+    String audience = this.AUDIENCE_WEB;
+//    if (device.equalsIgnoreCase(this.AUDIENCE_WEB)) {
+//      audience = this.AUDIENCE_WEB;
+//    } else if (device.equalsIgnoreCase(this.AUDIENCE_TABLET)) {
+//      audience = AUDIENCE_TABLET;
+//    } else if (device.equalsIgnoreCase(this.AUDIENCE_MOBILE)) {
+//      audience = AUDIENCE_MOBILE;
+//    }
     return audience;
   }
 
   private Boolean ignoreTokenExpiration(String token) {
     String audience = this.getAudienceFromToken(token);
-    return (this.AUDIENCE_TABLET.equals(audience) || this.AUDIENCE_MOBILE.equals(audience));
+    return false;
+//            (this.AUDIENCE_TABLET.equals(audience) || this.AUDIENCE_MOBILE.equals(audience));
   }
 
   public String generateToken(UserDetails userDetails, String device) {

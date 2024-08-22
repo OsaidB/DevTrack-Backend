@@ -11,7 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity //to make this class as a JPA Entity
-@Table(name="users")
+@Table(name="main_users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
