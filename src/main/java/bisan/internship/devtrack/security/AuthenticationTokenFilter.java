@@ -19,29 +19,48 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Configuration
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
+    /*
+    this class is responsible for processing JWT tokens in incoming HTTP requests,
+    extracting the username,
+    validating the token,
+    and setting up the Spring Security context
+    (with the authenticated user's details.)
 
-  @Value("${javatab.token.header}")
-  private String tokenHeader;
+    */
+    @Value("${javatab.token.header}")
+    private String tokenHeader;
 
-  private final TokenUtils tokenUtils;
-  private final UserDetailsService userDetailsService;
+    private final TokenUtils tokenUtils;
+    private final UserDetailsService userDetailsService;
 
-  @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    HttpServletRequest httpRequest = request;
-    String authToken = httpRequest.getHeader(tokenHeader);
-    String username = this.tokenUtils.getUsernameFromToken(authToken);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //The doFilterInternal method extracts the token
+        // from the HTTP request header
+        // using the tokenHeader property.
 
-    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-      UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-      if (this.tokenUtils.validateToken(authToken, userDetails)) {
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-      }
+//      HttpServletRequest httpRequest = request;
+        String authToken = request.getHeader(tokenHeader);
+
+        String username = this.tokenUtils.getUsernameFromToken(authToken);
+        //The tokenUtils.getUsernameFromToken(authToken) method
+        // retrieves the username embedded within the JWT token.
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {//If the username is valid and there's no existing authentication in the SecurityContext
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);//the UserDetailsService loads the user details.
+
+            if (this.tokenUtils.validateToken(authToken, userDetails)) {//The token is then validated using tokenUtils.validateToken(authToken, userDetails).
+                //Security Context Setup:
+                //If the token is valid (the if condition),
+                // -> a UsernamePasswordAuthenticationToken is created
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);// and set into the SecurityContextHolder (marking the user as authenticated for the request.)
+            }
+        }
+
+        filterChain.doFilter(request, response);//ensures that the request continues to the next filter in the chain.
     }
-
-    filterChain.doFilter(request, response);
-  }
 
 }

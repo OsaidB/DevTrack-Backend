@@ -50,7 +50,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         // Reload password post-authentication so we can generate token
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        return new AuthenticationResponse(Objects.requireNonNull(this.tokenUtils.generateToken(userDetails, authenticationRequest.getDevice())));
+//        return new AuthenticationResponse(Objects.requireNonNull(this.tokenUtils.generateToken(userDetails, authenticationRequest.getDevice())));
+        return new AuthenticationResponse(Objects.requireNonNull(this.tokenUtils.generateToken(userDetails)));
     }
 
     @Override

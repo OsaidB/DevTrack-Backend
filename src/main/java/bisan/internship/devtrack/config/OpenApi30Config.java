@@ -1,4 +1,4 @@
-package bisan.internship.devtrack.configuration;
+package bisan.internship.devtrack.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
