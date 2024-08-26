@@ -1,4 +1,4 @@
-package bisan.internship.devtrack.model.base;
+package bisan.internship.devtrack.dto.auth;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 

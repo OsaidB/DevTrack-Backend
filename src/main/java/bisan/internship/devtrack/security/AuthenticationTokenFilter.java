@@ -30,8 +30,10 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Value("${javatab.token.header}")
     private String tokenHeader;
 
-    private final TokenUtils tokenUtils;
-    private final UserDetailsService userDetailsService;
+    private final TokenUtils tokenUtils; //a custom class that is designed to handle JSON Web Tokens (JWTs)
+    // for authentication and authorization purposes.
+
+    private final UserDetailsService userDetailsService;//is used to load user-specific data during authentication
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

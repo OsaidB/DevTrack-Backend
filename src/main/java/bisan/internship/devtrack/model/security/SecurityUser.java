@@ -7,139 +7,152 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 
+
+/**
+ * SecurityUser represents a user in the security context of the application.
+ * It implements the UserDetails interface from Spring Security, providing necessary user details
+ * for authentication and authorization.
+ */
 public class SecurityUser implements UserDetails {
 
-  private static final long serialVersionUID = -4363004109103089561L;
+    private static final long serialVersionUID = -4363004109103089561L;
 
-  private Long id;
-  private String username;
-  private String password;
-  private String email;
-  private Date lastPasswordReset;
-  private Collection<? extends GrantedAuthority> authorities;
-  private Boolean accountNonExpired = true;
-  private Boolean accountNonLocked = true;
-  private Boolean credentialsNonExpired = true;
-  private Boolean enabled = true;
+    private Long id;
+    private String username;
+    private String password;
+    private String email;
 
-  public SecurityUser() {
-    super();
-  }
+    // Date when the password was last reset
+    private Date lastPasswordReset;
 
-  public SecurityUser(Long id, String username, String password, String email, Date lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
-    this.setId(id);
-    this.setUsername(username);
-    this.setPassword(password);
-    this.setEmail(email);
-    this.setLastPasswordReset(lastPasswordReset);
-    this.setAuthorities(authorities);
-  }
+    // Authorities (roles/permissions) granted to the user
+    private Collection<? extends GrantedAuthority> authorities;
 
-  public Long getId() {
-    return this.id;
-  }
+    private Boolean accountNonExpired = true;  // Flag indicating if the account is not expired
+    private Boolean accountNonLocked = true;  // Flag indicating if the account is not locked
+    private Boolean credentialsNonExpired = true;  // Flag indicating if the credentials are not expired
+    private Boolean enabled = true;  // Flag indicating if the account is enabled
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public SecurityUser() {
+        super();
+    }
 
-  public String getUsername() {
-    return this.username;
-  }
+    public SecurityUser(Long id, String username, String password, String email, Date lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
+        this.setId(id);
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setEmail(email);
+        this.setLastPasswordReset(lastPasswordReset);
+        this.setAuthorities(authorities);
+    }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    public Long getId() {
+        return this.id;
+    }
 
-  @JsonIgnore
-  public String getPassword() {
-    return this.password;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public String getUsername() {
+        return this.username;
+    }
 
-  public String getEmail() {
-    return this.email;
-  }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    @JsonIgnore//This method is ignored during serialization.
+    public String getPassword() {
+        return this.password;
+    }
 
-  @JsonIgnore
-  public Date getLastPasswordReset() {
-    return this.lastPasswordReset;
-  }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-  public void setLastPasswordReset(Date lastPasswordReset) {
-    this.lastPasswordReset = lastPasswordReset;
-  }
+    public String getEmail() {
+        return this.email;
+    }
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return this.authorities;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-    this.authorities = authorities;
-  }
+    @JsonIgnore//Gets the date when the password was last reset. This method is ignored during serialization.
+    public Date getLastPasswordReset() {
+        return this.lastPasswordReset;
+    }
 
-  @JsonIgnore
-  public Boolean getAccountNonExpired() {
-    return this.accountNonExpired;
-  }
+    public void setLastPasswordReset(Date lastPasswordReset) {
+        this.lastPasswordReset = lastPasswordReset;
+    }
 
-  public void setAccountNonExpired(Boolean accountNonExpired) {
-    this.accountNonExpired = accountNonExpired;
-  }
+    @Override//Gets the authorities (roles/permissions) granted to the user.
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return this.getAccountNonExpired();
-  }
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
 
-  @JsonIgnore
-  public Boolean getAccountNonLocked() {
-    return this.accountNonLocked;
-  }
+    @JsonIgnore//Gets the flag indicating if the account is not expired.
+    // This method is ignored during serialization.
+    public Boolean getAccountNonExpired() {
+        return this.accountNonExpired;
+    }
 
-  public void setAccountNonLocked(Boolean accountNonLocked) {
-    this.accountNonLocked = accountNonLocked;
-  }
+    //accountNonExpired true if the account is not expired
+    public void setAccountNonExpired(Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
 
-  @Override
-  public boolean isAccountNonLocked() {
-    return this.getAccountNonLocked();
-  }
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.getAccountNonExpired();
+    }
 
-  @JsonIgnore
-  public Boolean getCredentialsNonExpired() {
-    return this.credentialsNonExpired;
-  }
+    @JsonIgnore
+    public Boolean getAccountNonLocked() {
+        return this.accountNonLocked;
+    }
 
-  public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-    this.credentialsNonExpired = credentialsNonExpired;
-  }
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
 
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return this.getCredentialsNonExpired();
-  }
+    @Override//true if the account is not locked
+    public boolean isAccountNonLocked() {
+        return this.getAccountNonLocked();
+    }
 
-  @JsonIgnore
-  public Boolean getEnabled() {
-    return this.enabled;
-  }
+    @JsonIgnore//true if the credentials are not expired
+    public Boolean getCredentialsNonExpired() {
+        return this.credentialsNonExpired;
+    }
 
-  public void setEnabled(Boolean enabled) {
-    this.enabled = enabled;
-  }
+    public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
 
-  @Override
-  public boolean isEnabled() {
-    return this.getEnabled();
-  }
+    @Override//true if the credentials are not expired
+    public boolean isCredentialsNonExpired() {
+        return this.getCredentialsNonExpired();
+    }
+
+    @JsonIgnore
+    public Boolean getEnabled() {
+        return this.enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.getEnabled();
+    }
 
 }

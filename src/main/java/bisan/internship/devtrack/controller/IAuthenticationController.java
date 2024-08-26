@@ -1,7 +1,7 @@
 package bisan.internship.devtrack.controller;
 
 //import com.javatab.dto.request.AuthenticationRequest;
-import bisan.internship.devtrack.dto.request.AuthenticationRequest;
+import bisan.internship.devtrack.dto.auth.AuthRequest;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -17,10 +17,10 @@ public interface IAuthenticationController {
 
     @SecurityRequirements
     @PostMapping()
-    ResponseEntity<?> authenticationRequest(@RequestBody @Valid AuthenticationRequest authenticationRequest);
+    ResponseEntity<?> authenticationRequest(@RequestBody @Valid AuthRequest authRequest);
     @GetMapping("/refresh")
     ResponseEntity<?> authenticationRequest(HttpServletRequest request);
     @SecurityRequirements
     @PostMapping("/register")
-    ResponseEntity<?> registerUser(@RequestBody @Valid AuthenticationRequest authenticationRequest);
+    ResponseEntity<?> registerUser(@RequestBody @Valid AuthRequest authRequest);
 }

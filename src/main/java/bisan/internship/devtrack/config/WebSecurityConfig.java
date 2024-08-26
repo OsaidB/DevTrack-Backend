@@ -1,8 +1,5 @@
 package bisan.internship.devtrack.config;
 
-//import com.javatab.security.AuthenticationTokenFilter;
-//import com.javatab.security.EntryPointUnauthorizedHandler;
-
 import bisan.internship.devtrack.security.AuthenticationTokenFilter;
 import bisan.internship.devtrack.security.EntryPointUnauthorizedHandler;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,7 +22,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfiguration {
+public class WebSecurityConfig {
 
     private final EntryPointUnauthorizedHandler unauthorizedHandler;
     private final AuthenticationConfiguration authConfig;
