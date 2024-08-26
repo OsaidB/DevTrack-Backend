@@ -1,7 +1,6 @@
-package bisan.internship.devtrack.service.impl;
+package bisan.internship.devtrack.service.auth;
 
 //import com.javatab.service.SecurityService;
-import bisan.internship.devtrack.service.SecurityService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

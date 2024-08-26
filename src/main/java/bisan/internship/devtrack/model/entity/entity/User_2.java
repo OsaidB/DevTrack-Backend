@@ -35,19 +35,21 @@ public class User_2 implements Serializable {
 
   @Override
   public boolean equals(Object o) {
+    // Overrides the equals method to compare User_2 objects based on their id
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     User_2 user_2 = (User_2) o;
     return id != null && id.equals(user_2.id);
   }
 
-  @Override
+  @Override    // Overrides the hashCode method to generate a hash code based on the id
   public int hashCode() {
     return id != null ? id.hashCode() : 0;
   }
 
   @Override
   public String toString() {
+    // Overrides the toString method to return a string representation of the User_2 object
     return "User_2{" +
             "id=" + id +
             ", password='" + password + '\'' +

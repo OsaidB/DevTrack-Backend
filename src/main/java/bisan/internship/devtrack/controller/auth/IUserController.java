@@ -1,4 +1,4 @@
-package bisan.internship.devtrack.controller;
+package bisan.internship.devtrack.controller.auth;
 
 //import com.javatab.domain.entity.User;
 //import com.javatab.exception.NoUserFoundException;

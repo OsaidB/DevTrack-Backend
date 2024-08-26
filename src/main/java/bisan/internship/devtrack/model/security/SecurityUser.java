@@ -18,8 +18,9 @@ public class SecurityUser implements UserDetails {
     private static final long serialVersionUID = -4363004109103089561L;
 
     private Long id;
-    private String username;
-    private String password;
+
+//    private String username;
+    private String password;    // User's hashed password
     private String email;
 
     // Date when the password was last reset
@@ -28,6 +29,8 @@ public class SecurityUser implements UserDetails {
     // Authorities (roles/permissions) granted to the user
     private Collection<? extends GrantedAuthority> authorities;
 
+    //the following flags are part of the UserDetails interface
+    // and determine whether the user’s account is active and valid.
     private Boolean accountNonExpired = true;  // Flag indicating if the account is not expired
     private Boolean accountNonLocked = true;  // Flag indicating if the account is not locked
     private Boolean credentialsNonExpired = true;  // Flag indicating if the credentials are not expired
@@ -37,9 +40,9 @@ public class SecurityUser implements UserDetails {
         super();
     }
 
-    public SecurityUser(Long id, String username, String password, String email, Date lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
+    public SecurityUser(Long id, String password, String email, Date lastPasswordReset, Collection<? extends GrantedAuthority> authorities) {
         this.setId(id);
-        this.setUsername(username);
+//        this.setUsername(username);
         this.setPassword(password);
         this.setEmail(email);
         this.setLastPasswordReset(lastPasswordReset);
@@ -54,13 +57,14 @@ public class SecurityUser implements UserDetails {
         this.id = id;
     }
 
+    @Override//Returns the email as the principal (username equivalent) for authentication.
     public String getUsername() {
-        return this.username;
+        return this.getEmail();
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
 
     @JsonIgnore//This method is ignored during serialization.
     public String getPassword() {

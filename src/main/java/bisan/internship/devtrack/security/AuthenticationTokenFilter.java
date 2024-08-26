@@ -44,21 +44,34 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 //      HttpServletRequest httpRequest = request;
         String authToken = request.getHeader(tokenHeader);
 
-        String username = this.tokenUtils.getUsernameFromToken(authToken);
+        if (authToken == null || authToken.isEmpty()) {
+            logger.warn("Authorization header is missing or empty.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
+        String email  = this.tokenUtils.getUsernameFromToken(authToken);//username is actually the email
         //The tokenUtils.getUsernameFromToken(authToken) method
         // retrieves the username embedded within the JWT token.
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {//If the username is valid and there's no existing authentication in the SecurityContext
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);//the UserDetailsService loads the user details.
+        if (email  != null && SecurityContextHolder.getContext().getAuthentication() == null) {//If the username is valid and there's no existing authentication in the SecurityContext
 
-            if (this.tokenUtils.validateToken(authToken, userDetails)) {//The token is then validated using tokenUtils.validateToken(authToken, userDetails).
-                //Security Context Setup:
-                //If the token is valid (the if condition),
-                // -> a UsernamePasswordAuthenticationToken is created
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            try {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(email );//the UserDetailsService loads the user details.
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);// and set into the SecurityContextHolder (marking the user as authenticated for the request.)
+                if (this.tokenUtils.validateToken(authToken, userDetails)) {//The token is then validated using tokenUtils.validateToken(authToken, userDetails).
+                    //Security Context Setup:
+                    //If the token is valid (the if condition),
+                    // -> a UsernamePasswordAuthenticationToken is created
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);// and set into the SecurityContextHolder (marking the user as authenticated for the request.)
+                }
+            } catch (Exception e) {
+                logger.error("Authentication failed for email: " + email , e);
             }
         }
 

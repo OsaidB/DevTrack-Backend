@@ -1,4 +1,4 @@
-package bisan.internship.devtrack.controller.v1;
+package bisan.internship.devtrack.controller.auth.v1;
 
 //import com.javatab.controller.BaseController;
 //import com.javatab.controller.IAuthenticationController;
@@ -6,8 +6,8 @@ package bisan.internship.devtrack.controller.v1;
 //import com.javatab.dto.request.AuthenticationRequest;
 //import com.javatab.dto.response.AuthenticationResponse;
 //import com.javatab.service.AuthenticationService;
-import bisan.internship.devtrack.controller.BaseController;
-import bisan.internship.devtrack.controller.IAuthenticationController;
+import bisan.internship.devtrack.controller.auth.BaseController;
+import bisan.internship.devtrack.controller.auth.IAuthenticationController;
 import bisan.internship.devtrack.dto.auth.AuthRequest;
 import bisan.internship.devtrack.dto.auth.AuthResponse;
 import bisan.internship.devtrack.model.entity.entity.User_2;

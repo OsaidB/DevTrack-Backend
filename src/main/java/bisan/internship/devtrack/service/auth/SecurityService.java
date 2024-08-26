@@ -1,4 +1,4 @@
-package bisan.internship.devtrack.service;
+package bisan.internship.devtrack.service.auth;
 
 public interface SecurityService {
 

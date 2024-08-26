@@ -1,4 +1,4 @@
-package bisan.internship.devtrack.controller;
+package bisan.internship.devtrack.controller.auth;
 
 //import com.javatab.dto.request.AuthenticationRequest;
 import bisan.internship.devtrack.dto.auth.AuthRequest;

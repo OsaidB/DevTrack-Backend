@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
     @Override
     public AuthResponse refreshToken(String token) {
         String email = this.tokenUtils.getUsernameFromToken(token);//username is actually the email
-        SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(email);//username is actually the email
+        SecurityUser user = (SecurityUser) this.userDetailsService.loadUserByUsername(email);// ensure this method works with email
         if (this.tokenUtils.canTokenBeRefreshed(token, user.getLastPasswordReset())) {
             return new AuthResponse(this.tokenUtils.refreshToken(token));
         }

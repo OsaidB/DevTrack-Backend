@@ -1,4 +1,4 @@
-package bisan.internship.devtrack.controller;
+package bisan.internship.devtrack.controller.auth;
 
 
 import org.springframework.http.HttpStatus;
