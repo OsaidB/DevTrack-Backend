@@ -35,14 +35,17 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
+        // Check if the project exists
         Project project = projectRepo.findById(taskDTO.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + taskDTO.getProjectId()));
 
         // Retrieve project members
         List<User> projectMembers = userRepo.findByProjectId(taskDTO.getProjectId());
 
-        // Check if assigned user is a member of the project
+        // Initialize assigned user as null
         User assignedTo = null;
+
+        // Check if assigned user ID is provided and if the user is a member of the project
         if (taskDTO.getAssignedToUserId() != null) {
             assignedTo = projectMembers.stream()
                     .filter(user -> user.getUserId().equals(taskDTO.getAssignedToUserId()))
@@ -50,9 +53,19 @@ public class TaskServiceImpl implements TaskService {
                     .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
         }
 
+        // Map DTO to entity
         Task task = TaskMapper.INSTANCE.toTaskEntity(taskDTO);
+
+        // Set the assigned user if present
+        task.setAssignedTo(assignedTo);
+
+        // Set additional fields if necessary
+        task.setProject(project); // Ensure you set the project as well
+
+        // Save the task
         Task savedTask = taskRepo.save(task);
 
+        // Map entity back to DTO and return
         return TaskMapper.INSTANCE.toTaskDTO(savedTask);
     }
 
