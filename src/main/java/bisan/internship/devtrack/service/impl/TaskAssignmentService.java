@@ -2,6 +2,8 @@ package bisan.internship.devtrack.service.impl;
 
 import bisan.internship.devtrack.model.entity.Task;
 import bisan.internship.devtrack.model.entity.User;
+//import bisan.internship.devtrack.repository.TaskRepo;
+//import bisan.internship.devtrack.repository.UserRepo;
 import bisan.internship.devtrack.repository.TaskRepo;
 import bisan.internship.devtrack.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,6 @@ public class TaskAssignmentService {
 
     private void logTaskAssignment(Task task, User assignedUser, User teamLeader) {
         // Logic for logging task assignments
-        System.out.println("Task " + task.getTaskName() + " assigned to " + assignedUser.getUsername() + " by " + teamLeader.getUsername());
+        System.out.println("Task " + task.getTaskName() + " assigned to " + assignedUser.getFirstName()+ assignedUser.getLastName() + " by " + teamLeader.getFirstName()+ teamLeader.getLastName());
     }
 }

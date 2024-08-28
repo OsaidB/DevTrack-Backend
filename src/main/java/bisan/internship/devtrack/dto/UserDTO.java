@@ -12,20 +12,18 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {  //we use UserDTO class to transfer the data between client and server,
-                        //so when we build the rest APIs Services,
-                        //we'll use this UserDTO as a response for the rest APIs
+public class UserDTO {
     private Long userId;
-    private String username;
+//    private String username;
 
     private String email;
-    private String password;//should not stay here
+//    private String password;//should not stay here
 
     private String firstName;
     private String lastName;
 
-    @NotNull(message = "The Role cant be null")
-    private Long functionalRoleId; // Update to reflect the role name
+    @NotNull(message = "The Role can't be null")
+    private Long functionalRoleId; // Reflects the role ID
 
     private Boolean isTeamLeader;
     private LocalDateTime createdAt;

@@ -42,7 +42,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + projectMemberDTO.getUserId()));
 
         // Check if the user is already a member of the project
-        boolean exists = projectMemberRepo.existsByProjectProjectIdAndUserUserId(projectMemberDTO.getProjectId(), projectMemberDTO.getUserId());
+        boolean exists = projectMemberRepo.existsByProjectProjectIdAndUserId(projectMemberDTO.getProjectId(), projectMemberDTO.getUserId());
         if (exists) {
             throw new IllegalArgumentException("User is already a member of the project.");
         }
@@ -110,7 +110,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public void deleteProjectMemberFromAllProjects(Long userId) {
-        List<ProjectMember> projectMembers = projectMemberRepo.findByUserUserId(userId);
+        List<ProjectMember> projectMembers = projectMemberRepo.findByUserId(userId);
         if (projectMembers.isEmpty()) {
             throw new ResourceNotFoundException("Project member not found with user id: " + userId);
         }

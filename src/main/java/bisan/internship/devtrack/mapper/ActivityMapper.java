@@ -10,7 +10,7 @@ public class ActivityMapper {
     public static ActivityDTO mapToActivityDTO(Activity activity) {
         return new ActivityDTO(
                 activity.getActivityId(),
-                activity.getUser().getUserId(),
+                activity.getUser().getId(),
                 activity.getProject().getProjectId(),
                 activity.getTask().getTaskId(),
                 activity.getAction(),

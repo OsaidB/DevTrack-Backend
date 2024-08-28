@@ -2,11 +2,17 @@ package bisan.internship.devtrack.service.auth;
 
 import bisan.internship.devtrack.dto.auth.AuthRequest;
 import bisan.internship.devtrack.dto.auth.AuthResponse;
-import bisan.internship.devtrack.model.entity.entity.User_2;
+//import bisan.internship.devtrack.model.entity.entity.User_2;
+import bisan.internship.devtrack.dto.auth.RegisterRequest;
+import bisan.internship.devtrack.model.entity.FunctionalRole;
+import bisan.internship.devtrack.model.entity.User;
 import bisan.internship.devtrack.model.security.SecurityUser;
-import bisan.internship.devtrack.repository.UserRepo2;
+//import bisan.internship.devtrack.repository.UserRepo2;
+import bisan.internship.devtrack.repository.FuncRoleRepo;
+import bisan.internship.devtrack.repository.UserRepo;
 import bisan.internship.devtrack.security.TokenUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,8 +35,10 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;    //prebuilt from spring security
 
-    private final UserRepo2 userRepo2;
-
+    @Autowired
+    private final UserRepo userRepo;
+    @Autowired
+    private FuncRoleRepo funcRoleRepo;
     /**
      * Authenticates the user based on provided credentials and generates a JWT token.
      *
@@ -66,16 +74,35 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
     }
 
     @Override
-    public User_2 registerUser(AuthRequest authRequest) {
+    public User registerUser(RegisterRequest registerRequest) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(authRequest.getPassword());
+        String hashedPassword = passwordEncoder.encode(registerRequest.getPassword());
         // Since we're no longer using the username, it is removed from the builder
-        User_2 newUser2 = User_2.builder()
+        FunctionalRole functionalRole = funcRoleRepo.findById(registerRequest.getFunctionalRoleId())
+                .orElseThrow(() -> new RuntimeException("FunctionalRole not found"));
+
+        String authorities;
+        if (registerRequest.getIsAdmin()) {
+            authorities = "ADMIN";
+        } else if (registerRequest.getIsTeamLeader()) {
+            authorities = "TEAM_LEADER";
+        } else {
+            authorities = "DEVELOPER";
+        }
+
+        // Build a new User instance with the provided details
+        User newUser = User.builder()
+                .email(registerRequest.getEmail()) // Use email as the identifier
                 .password(hashedPassword)
-                .email(authRequest.getEmail()) // Use email as the identifier
-                .lastPasswordReset(new Date())
-                .authorities("ADMIN") // Set authorities as needed
+                .firstName(registerRequest.getFirstName()) // Ensure firstName is set
+                .lastName(registerRequest.getLastName()) // Ensure lastName is set
+
+                .funcRole(functionalRole)
+
+                .isTeamLeader(registerRequest.getIsTeamLeader()) // Set team leader status
+                .lastPasswordReset(new Date()) // Set the last password reset date
+                .authorities(authorities) // Set authorities or roles as needed
                 .build();
-        return userRepo2.save(newUser2);
+        return userRepo.save(newUser);
     }
 }

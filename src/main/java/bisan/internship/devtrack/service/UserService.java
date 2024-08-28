@@ -13,7 +13,7 @@ public interface UserService {
     UserDTO updateUser(Long userId, UserDTO updatedUser);
     void deleteUser(Long userId);
 //    List<User> getAllUsers();
-    UserDTO getUserByUsername(String username);
+    UserDTO getUserByUsername(String username);//email
 
 
 }

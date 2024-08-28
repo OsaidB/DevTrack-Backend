@@ -45,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
         User assignedTo = null;
         if (taskDTO.getAssignedToUserId() != null) {
             assignedTo = projectMembers.stream()
-                    .filter(user -> user.getUserId().equals(taskDTO.getAssignedToUserId()))
+                    .filter(user -> user.getId().equals(taskDTO.getAssignedToUserId()))
                     .findFirst()
                     .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
         }
@@ -92,7 +92,7 @@ public class TaskServiceImpl implements TaskService {
         User assignedTo = null;
         if (updatedTaskDTO.getAssignedToUserId() != null) {
             assignedTo = projectMembers.stream()
-                    .filter(user -> user.getUserId().equals(updatedTaskDTO.getAssignedToUserId()))
+                    .filter(user -> user.getId().equals(updatedTaskDTO.getAssignedToUserId()))
                     .findFirst()
                     .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
         }
@@ -118,7 +118,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> getTasksByUserId(long userId) {
-        List<Task> tasks = taskRepo.findByAssignedToUserId(userId);
+        List<Task> tasks = taskRepo.findByAssignedToId(userId);
         return tasks.stream()
                 .map(TaskMapper.INSTANCE::toTaskDTO)
                 .collect(Collectors.toList());

@@ -16,7 +16,7 @@ public interface NotificationMapper {
     NotificationMapper INSTANCE = Mappers.getMapper(NotificationMapper.class);
 
     @Mappings({
-            @Mapping(source = "user.userId", target = "userId")
+            @Mapping(source = "user.id", target = "userId")
 //            @Mapping(source = "notificationId", target = "notificationId"),
 //            @Mapping(source = "message", target = "message"),
 //            @Mapping(source = "isRead", target = "isRead"),
@@ -25,13 +25,13 @@ public interface NotificationMapper {
     NotificationDTO toNotificationDTO(Notification notification);
 
     @Mappings({
-            @Mapping(source = "userId", target = "user.userId")
+            @Mapping(source = "userId", target = "user.id")
 
     })
     Notification toNotificationEntity(NotificationDTO notificationDTO);
 
     default Long map(User user) {
-        return user == null ? null : user.getUserId();
+        return user == null ? null : user.getId();
     }
 
     default User map(Long userId) {
@@ -39,7 +39,7 @@ public interface NotificationMapper {
             return null;
         }
         User user = new User();
-        user.setUserId(userId);
+        user.setId(userId);
 //        user.setId(userId);
         return user;
     }

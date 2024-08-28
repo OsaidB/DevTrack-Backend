@@ -22,6 +22,7 @@ public interface UserMapper {
     @Mapping(source = "funcRole.funcRoleId", target = "functionalRoleId")
     UserDTO toUserDTO(User user);
 
+    @Mapping(source = "functionalRoleId", target = "funcRole.funcRoleId") // Assuming you need to set the id on funcRole
     @Mapping(target = "funcRole", ignore = true) // The role will be set in the service
     User toUserEntity(UserDTO userDTO);
 }

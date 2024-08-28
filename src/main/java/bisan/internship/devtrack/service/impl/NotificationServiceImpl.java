@@ -56,7 +56,7 @@ public class NotificationServiceImpl implements NotificationService {
         userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
-        List<Notification> notifications = notificationRepo.findNotificationByUserUserId(userId);
+        List<Notification> notifications = notificationRepo.findNotificationByUserId(userId);
         return notifications.stream().map(NotificationMapper.INSTANCE::toNotificationDTO).collect(Collectors.toList());
     }
 

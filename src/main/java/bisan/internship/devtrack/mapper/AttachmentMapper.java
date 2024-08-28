@@ -10,7 +10,7 @@ public class AttachmentMapper {
         return new AttachmentDTO(
                 attachment.getAttachmentId(),
                 attachment.getTask().getTaskId(),
-                attachment.getUser().getUserId(),
+                attachment.getUser().getId(),
                 attachment.getFileName(),
                 attachment.getFileURL(),
                 attachment.getCreatedAt()

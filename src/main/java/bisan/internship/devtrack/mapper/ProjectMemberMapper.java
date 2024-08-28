@@ -17,14 +17,14 @@ public interface ProjectMemberMapper {
 
     @Mappings({
             @Mapping(source = "project.projectId", target = "projectId"),
-            @Mapping(source = "user.userId", target = "userId", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_NULL)
+            @Mapping(source = "user.id", target = "userId", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_NULL)
 
     })
     ProjectMemberDTO toProjectMemberDTO(ProjectMember projectMember);
 
     @Mappings({
             @Mapping(source = "projectId", target = "project.projectId"),
-            @Mapping(source = "userId", target = "user.userId", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_NULL)
+            @Mapping(source = "userId", target = "user.id", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_NULL)
 
     })
     ProjectMember toProjectMemberEntity(ProjectMemberDTO projectMemberDTO);

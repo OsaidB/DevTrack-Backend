@@ -1,29 +1,36 @@
 package bisan.internship.devtrack.model.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity //to make this class as a JPA Entity
-@Table(name="main_users")
-public class User {
+@Builder
+@Entity
+@Table(name = "users")
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 2353528370345499815L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Using IDENTITY for auto-increment
+    private Long id;
 
     @Column(nullable = false, unique = true)
-    private String username;
-
-    @Column(name = "email_id" ,nullable = false, unique = true)
     private String email;
 
-    @Column(name = "pass", nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Column(name = "first_name", nullable = false)
@@ -34,16 +41,51 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
-    private FunctionalRole  funcRole;//BackEnd?FrontEnd?QA?...
+    private FunctionalRole funcRole; // Functional role like BackEnd, FrontEnd, QA
 
     @Column(name = "is_team_leader", nullable = false)
-    private Boolean isTeamLeader;//This: ex(account is a BackEnd TeamLeader)
+    private Boolean isTeamLeader; // Specifies if the user is a team leader
+
+    @Column(name = "authorities")
+    private String authorities; // Roles such as Admin, Team Leader, Developer
+
+    @Column(name = "last_password_reset")
+    private Date lastPasswordReset; // Time when the password was last reset
 
     @CreationTimestamp
-    @Column(name = "created_at",updatable = false)
-    private LocalDateTime createdAt;//time of created this account
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt; // Time of account creation
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;//any edit on account info
+    private LocalDateTime updatedAt; // Last time the account info was updated
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", funcRole=" + funcRole +
+                ", isTeamLeader=" + isTeamLeader +
+                ", authorities='" + authorities + '\'' +
+                ", lastPasswordReset=" + lastPasswordReset +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

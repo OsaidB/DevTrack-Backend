@@ -1,6 +1,7 @@
 package bisan.internship.devtrack.service.impl;
 
 import bisan.internship.devtrack.dto.UserDTO;
+import bisan.internship.devtrack.exception.NoUserFoundException;
 import bisan.internship.devtrack.exception.ResourceNotFoundException;
 import bisan.internship.devtrack.mapper.UserMapper;
 import bisan.internship.devtrack.model.entity.FunctionalRole;
@@ -100,7 +101,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getUsersByRoleId(Long roleId){
+    public List<UserDTO> getUsersByRoleId(Long roleId) {
         funcRoleRepo.findById(roleId)
                 .orElseThrow(() -> new ResourceNotFoundException("FunctionalRole not found with id : " + roleId));
         List<User> users = userRepo.findUsersByFuncRoleFuncRoleId(roleId);
@@ -122,12 +123,12 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedAt(updatedUser.getUpdatedAt());
         user.setEmail(updatedUser.getEmail());
 
-        user.setPassword(updatedUser.getPassword());
+//        user.setPassword(updatedUser.getPassword());
 //        user.setHash(updatedUser.getHashedPassword());
 
         user.setFuncRole(role); // Set the FuncRole entity
         user.setIsTeamLeader(updatedUser.getIsTeamLeader());
-        user.setUsername(updatedUser.getUsername());
+//        user.setUsername(updatedUser.getUsername());
 
         user.setFirstName(updatedUser.getFirstName());
 
@@ -145,10 +146,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserByUsername(String username) {
+    public UserDTO getUserByUsername(String email) {
 //        return Optional.empty();
 
-        User user = userRepo.findByUsername(username);
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new NoUserFoundException(String.format("No user found with email '%s'.", email)));
+
+
+
         return UserMapper.INSTANCE.toUserDTO(user);
     }
 }
