@@ -26,6 +26,10 @@ public class Task {
     @JoinColumn(name = "assigned_to_user_id", nullable = true)
     private User assignedTo;
 
+    @ManyToOne
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board board;
+
     @Column(name = "task_name", nullable = false)
     private String taskName;
 

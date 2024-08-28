@@ -14,4 +14,6 @@ public interface TaskService {
     List<TaskDTO> getTasksByProjectId(long projectId);
 
     List<TaskDTO> getTasksByUserId(long userId);
+
+    List<TaskDTO> getTasksByBoardId(long boardId);
 }

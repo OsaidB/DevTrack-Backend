@@ -1,6 +1,7 @@
 package bisan.internship.devtrack.mapper;
 
 import bisan.internship.devtrack.dto.TaskDTO;
+import bisan.internship.devtrack.model.entity.Board;
 import bisan.internship.devtrack.model.entity.Project;
 import bisan.internship.devtrack.model.entity.Task;
 import bisan.internship.devtrack.model.entity.User;
@@ -15,13 +16,15 @@ public interface TaskMapper {
 
     @Mappings({
             @Mapping(source = "project.projectId", target = "projectId"),
-            @Mapping(source = "assignedTo.userId", target = "assignedToUserId", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_NULL)
+            @Mapping(source = "assignedTo.userId", target = "assignedToUserId", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_NULL),
+            @Mapping(source = "board.boardId", target = "boardId")
     })
     TaskDTO toTaskDTO(Task task);
 
     @Mappings({
             @Mapping(source = "projectId", target = "project.projectId"),
-            @Mapping(source = "assignedToUserId", target = "assignedTo.userId")
+            @Mapping(source = "assignedToUserId", target = "assignedTo.userId"),
+            @Mapping(source = "boardId", target = "board.boardId")
     })
     Task toTaskEntity(TaskDTO taskDTO);
 
@@ -49,5 +52,18 @@ public interface TaskMapper {
         User user = new User();
         user.setUserId(userId);
         return user;
+    }
+
+    default Long mapBoardToId(Board board) {
+        return board == null ? null : board.getBoardId();
+    }
+
+    default Board mapIdToBoard(Long boardId) {
+        if (boardId == null) {
+            return null;
+        }
+        Board board = new Board();
+        board.setBoardId(boardId);
+        return board;
     }
 }

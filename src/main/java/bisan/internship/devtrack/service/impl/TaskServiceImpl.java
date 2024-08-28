@@ -3,9 +3,11 @@ package bisan.internship.devtrack.service.impl;
 import bisan.internship.devtrack.dto.TaskDTO;
 import bisan.internship.devtrack.exception.ResourceNotFoundException;
 import bisan.internship.devtrack.mapper.TaskMapper;
+import bisan.internship.devtrack.model.entity.Board;
 import bisan.internship.devtrack.model.entity.Project;
 import bisan.internship.devtrack.model.entity.Task;
 import bisan.internship.devtrack.model.entity.User;
+import bisan.internship.devtrack.repository.BoardRepo;  // Assuming you have this repository
 import bisan.internship.devtrack.repository.ProjectRepo;
 import bisan.internship.devtrack.repository.TaskRepo;
 import bisan.internship.devtrack.repository.UserRepo;
@@ -30,14 +32,18 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private UserRepo userRepo;
 
-//    @Autowired
-//    private TaskMapper taskMapper; // Inject TaskMapper
+    @Autowired
+    private BoardRepo boardRepo;  // Add BoardRepo to access boards
 
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
         // Check if the project exists
         Project project = projectRepo.findById(taskDTO.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + taskDTO.getProjectId()));
+
+        // Check if the board exists
+        Board board = boardRepo.findById(taskDTO.getBoardId())
+                .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + taskDTO.getBoardId()));
 
         // Retrieve project members
         List<User> projectMembers = userRepo.findByProjectId(taskDTO.getProjectId());
@@ -56,11 +62,12 @@ public class TaskServiceImpl implements TaskService {
         // Map DTO to entity
         Task task = TaskMapper.INSTANCE.toTaskEntity(taskDTO);
 
-        // Set the assigned user if present
+        // Set the assigned user and board
         task.setAssignedTo(assignedTo);
 
         // Set additional fields if necessary
         task.setProject(project); // Ensure you set the project as well
+        task.setBoard(board); // Set the board
 
         // Save the task
         Task savedTask = taskRepo.save(task);
@@ -91,6 +98,10 @@ public class TaskServiceImpl implements TaskService {
 
         if (!task.getProject().getProjectId().equals(updatedTaskDTO.getProjectId())) {
             throw new IllegalArgumentException("Changing the projectId is not allowed.");
+        }
+        // Update board
+        if (!task.getBoard().getBoardId().equals(updatedTaskDTO.getBoardId())) {
+            throw new IllegalArgumentException("Changing the boardId is not allowed.");
         }
         task.setTaskName(updatedTaskDTO.getTaskName());
         task.setTaskDescription(updatedTaskDTO.getTaskDescription());
@@ -132,6 +143,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDTO> getTasksByUserId(long userId) {
         List<Task> tasks = taskRepo.findByAssignedToUserId(userId);
+        return tasks.stream()
+                .map(TaskMapper.INSTANCE::toTaskDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskDTO> getTasksByBoardId(long boardId) {
+        List<Task> tasks = taskRepo.findByBoardBoardId(boardId);
         return tasks.stream()
                 .map(TaskMapper.INSTANCE::toTaskDTO)
                 .collect(Collectors.toList());
