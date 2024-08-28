@@ -33,7 +33,6 @@ public class TaskDTO {
     @NotNull(message = "Status cannot be null")
     @Pattern(regexp = "Unassigned Tasks|To Do|Doing|Ready to Review|Reviewing|Ready for QA|In Progress|QA Failed|QA Passed", message = "Invalid status")
     private String status;
-
     private String priority;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

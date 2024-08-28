@@ -16,14 +16,14 @@ public interface TaskMapper {
 
     @Mappings({
             @Mapping(source = "project.projectId", target = "projectId"),
-            @Mapping(source = "assignedTo.userId", target = "assignedToUserId", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_NULL),
+            @Mapping(source = "assignedTo.id", target = "assignedToUserId", nullValuePropertyMappingStrategy = org.mapstruct.NullValuePropertyMappingStrategy.SET_TO_NULL),
             @Mapping(source = "board.boardId", target = "boardId")
     })
     TaskDTO toTaskDTO(Task task);
 
     @Mappings({
             @Mapping(source = "projectId", target = "project.projectId"),
-            @Mapping(source = "assignedToUserId", target = "assignedTo.userId"),
+            @Mapping(source = "assignedToUserId", target = "assignedTo.id"),
             @Mapping(source = "boardId", target = "board.boardId")
     })
     Task toTaskEntity(TaskDTO taskDTO);
@@ -42,7 +42,7 @@ public interface TaskMapper {
     }
 
     default Long mapUserToId(User user) {
-        return user == null ? null : user.getUserId();
+        return user == null ? null : user.getId();
     }
 
     default User mapIdToUser(Long userId) {
@@ -50,7 +50,7 @@ public interface TaskMapper {
             return null;
         }
         User user = new User();
-        user.setUserId(userId);
+        user.setId(userId);
         return user;
     }
 

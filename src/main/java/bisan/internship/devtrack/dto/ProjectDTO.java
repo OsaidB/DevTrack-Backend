@@ -19,7 +19,7 @@ public class ProjectDTO {
     @Size(min = 1, max = 100, message = "The name of the project must be between 1 and 100 characters")
     private String name;
 
-//    @Size(max = 500, message = "The description must be less than 500 characters")
+    //    @Size(max = 500, message = "The description must be less than 500 characters")
     private String description;
 //    private Long createdBy; //always created by admin
 
