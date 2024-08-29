@@ -36,7 +36,8 @@ public class AuthenticationControllerV1 extends BaseController {
 
   @PostMapping("/register")
   public ResponseEntity<User> registerUser(@RequestBody @Valid RegisterRequest registerRequest) {
-    return new ResponseEntity<>(this.authenticationService.registerUser(registerRequest), HttpStatus.CREATED);
+    User createdUser= this.authenticationService.registerUser(registerRequest);
+    return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
   }
 
 }
