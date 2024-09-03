@@ -20,7 +20,7 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @PostMapping
-    public ResponseEntity<NotificationDTO> createNotification(@Valid  @RequestBody NotificationDTO notificationDTO) {
+    public ResponseEntity<NotificationDTO> createNotification(@Valid @RequestBody NotificationDTO notificationDTO) {
         NotificationDTO createdNotification = notificationService.createNotification(notificationDTO);
         return new ResponseEntity<>(createdNotification, HttpStatus.CREATED);
     }
@@ -37,15 +37,21 @@ public class NotificationController {
         return ResponseEntity.ok(notifications);
     }
 
-    @GetMapping("users/{userId}")
-    public ResponseEntity<List<NotificationDTO>> getNotificationsByUserId(@PathVariable("userId") long userId) {
-        List<NotificationDTO> notifications = notificationService.getNotificationsByUserId(userId);
+    @GetMapping("recipients/{recipientId}")
+    public ResponseEntity<List<NotificationDTO>> getNotificationsByRecipientId(@PathVariable("recipientId") long recipientId) {
+        List<NotificationDTO> notifications = notificationService.getNotificationsByRecipientId(recipientId);
+        return ResponseEntity.ok(notifications);
+    }
+
+    @GetMapping("senders/{senderId}")
+    public ResponseEntity<List<NotificationDTO>> getNotificationsBySenderId(@PathVariable("senderId") long senderId) {
+        List<NotificationDTO> notifications = notificationService.getNotificationsBySenderId(senderId);
         return ResponseEntity.ok(notifications);
     }
 
     @PutMapping("{notificationId}")
-    public ResponseEntity<NotificationDTO> updateNotification(@PathVariable("notificationId") long notificationId
-                                                                ,@Valid @RequestBody NotificationDTO updatedNotificationDTO) {
+    public ResponseEntity<NotificationDTO> updateNotification(@PathVariable("notificationId") long notificationId,
+                                                              @Valid @RequestBody NotificationDTO updatedNotificationDTO) {
         NotificationDTO notificationDTO = notificationService.updateNotification(notificationId, updatedNotificationDTO);
         return ResponseEntity.ok(notificationDTO);
     }

@@ -14,13 +14,14 @@ public interface NotificationMapper {
     NotificationMapper INSTANCE = Mappers.getMapper(NotificationMapper.class);
 
     @Mappings({
-            @Mapping(source = "user.id", target = "userId")
+            @Mapping(source = "sender.id", target = "senderId"),
+            @Mapping(source = "recipient.id", target = "recipientId")
     })
     NotificationDTO toNotificationDTO(Notification notification);
 
     @Mappings({
-            @Mapping(source = "userId", target = "user.id")
-
+            @Mapping(source = "senderId", target = "sender.id"),
+            @Mapping(source = "recipientId", target = "recipient.id")
     })
     Notification toNotificationEntity(NotificationDTO notificationDTO);
 

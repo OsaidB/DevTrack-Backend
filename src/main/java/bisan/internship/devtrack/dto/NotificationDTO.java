@@ -13,8 +13,11 @@ public class NotificationDTO {
 
     private Long notificationId;
 
-    @NotNull(message = "User ID cannot be null")
-    private Long userId;
+    @NotNull(message = "Sender ID cannot be null")
+    private Long senderId; // New field for sender ID
+
+    @NotNull(message = "Recipient ID cannot be null")
+    private Long recipientId; // Renamed field for recipient ID
 
     @NotNull(message = "Message cannot be null")
     @Size(max = 255, message = "Message must be less than 255 characters")

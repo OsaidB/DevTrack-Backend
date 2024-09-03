@@ -25,14 +25,18 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private UserRepo userRepo;
 
-//    @Autowired
-//    private NotificationMapper notificationMapper;
     @Override
     public NotificationDTO createNotification(NotificationDTO notificationDTO) {
-        User user = userRepo.findById(notificationDTO.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + notificationDTO.getNotificationId()));
+        User sender = userRepo.findById(notificationDTO.getSenderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Sender not found with id: " + notificationDTO.getSenderId()));
+
+        User recipient = userRepo.findById(notificationDTO.getRecipientId())
+                .orElseThrow(() -> new ResourceNotFoundException("Recipient not found with id: " + notificationDTO.getRecipientId()));
 
         Notification notification = NotificationMapper.INSTANCE.toNotificationEntity(notificationDTO);
+        notification.setSender(sender); // Set the sender
+        notification.setRecipient(recipient); // Set the recipient
+
         Notification savedNotification = notificationRepo.save(notification);
 
         return NotificationMapper.INSTANCE.toNotificationDTO(savedNotification);
@@ -52,11 +56,20 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<NotificationDTO> getNotificationsByUserId(Long userId) {
-        userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+    public List<NotificationDTO> getNotificationsByRecipientId(Long recipientId) {
+        userRepo.findById(recipientId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + recipientId));
 
-        List<Notification> notifications = notificationRepo.findNotificationByUserId(userId);
+        List<Notification> notifications = notificationRepo.findByRecipientId(recipientId);
+        return notifications.stream().map(NotificationMapper.INSTANCE::toNotificationDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<NotificationDTO> getNotificationsBySenderId(Long senderId) {
+        userRepo.findById(senderId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + senderId));
+
+        List<Notification> notifications = notificationRepo.findBySenderId(senderId);
         return notifications.stream().map(NotificationMapper.INSTANCE::toNotificationDTO).collect(Collectors.toList());
     }
 
@@ -64,16 +77,21 @@ public class NotificationServiceImpl implements NotificationService {
     public NotificationDTO updateNotification(Long notificationId, NotificationDTO updatedNotification){
         Notification notification = notificationRepo.findById(notificationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Notification not found with id: " + notificationId));
-        User user = userRepo.findById(updatedNotification.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + updatedNotification.getUserId()));
 
-        notification.setUser(user);
+        User sender = userRepo.findById(updatedNotification.getSenderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Sender not found with id: " + updatedNotification.getSenderId()));
+
+        User recipient = userRepo.findById(updatedNotification.getRecipientId())
+                .orElseThrow(() -> new ResourceNotFoundException("Recipient not found with id: " + updatedNotification.getRecipientId()));
+
+        notification.setSender(sender); // Update the sender
+        notification.setRecipient(recipient); // Update the recipient
         notification.setIsRead(updatedNotification.getIsRead());
         notification.setMessage(updatedNotification.getMessage());
 //        notification.setCreatedAt(updatedNotification.getCreatedAt());
 
-        Notification saveNotification = notificationRepo.save(notification);
-        return NotificationMapper.INSTANCE.toNotificationDTO(saveNotification);
+        Notification savedNotification = notificationRepo.save(notification);
+        return NotificationMapper.INSTANCE.toNotificationDTO(savedNotification);
     }
 
     @Override

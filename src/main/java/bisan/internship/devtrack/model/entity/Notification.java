@@ -19,8 +19,12 @@ public class Notification {
     private Long notificationId;
 
     @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false) // New field for sender
+    private User sender; // Updated field name
+
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User recipient; // Updated field name
 
     private String message;
     private Boolean isRead;
