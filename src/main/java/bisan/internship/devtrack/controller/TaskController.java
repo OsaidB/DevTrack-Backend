@@ -64,4 +64,10 @@ public class TaskController {
         taskService.deleteTask(taskId);
         return ResponseEntity.ok("Task deleted successfully");
     }
+
+    @GetMapping("/board/{boardId}")
+    public ResponseEntity<List<TaskDTO>> getTasksByBoardId(@PathVariable("boardId") long boardId) {
+        List<TaskDTO> tasks = taskService.getTasksByBoardId(boardId);
+        return ResponseEntity.ok(tasks);
+    }
 }

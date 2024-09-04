@@ -7,7 +7,7 @@ import bisan.internship.devtrack.model.entity.Board;
 import bisan.internship.devtrack.model.entity.Project;
 import bisan.internship.devtrack.model.entity.Task;
 import bisan.internship.devtrack.model.entity.User;
-import bisan.internship.devtrack.repository.BoardRepo;  // Assuming you have this repository
+import bisan.internship.devtrack.repository.BoardRepo;
 import bisan.internship.devtrack.repository.ProjectRepo;
 import bisan.internship.devtrack.repository.TaskRepo;
 import bisan.internship.devtrack.repository.UserRepo;
@@ -24,16 +24,16 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
-    private TaskRepo taskRepo;
+    private final TaskRepo taskRepo;
 
     @Autowired
-    private ProjectRepo projectRepo;
+    private final ProjectRepo projectRepo;
 
     @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
     @Autowired
-    private BoardRepo boardRepo;  // Add BoardRepo to access boards
+    private final BoardRepo boardRepo;
 
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
@@ -62,12 +62,10 @@ public class TaskServiceImpl implements TaskService {
         // Map DTO to entity
         Task task = TaskMapper.INSTANCE.toTaskEntity(taskDTO);
 
-        // Set the assigned user and board
+        // Set the assigned user, board, and project
         task.setAssignedTo(assignedTo);
-
-        // Set additional fields if necessary
-        task.setProject(project); // Ensure you set the project as well
-        task.setBoard(board); // Set the board
+        task.setBoard(board);
+        task.setProject(project);
 
         // Save the task
         Task savedTask = taskRepo.save(task);
@@ -96,33 +94,39 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
 
+        // Validate projectId consistency
         if (!task.getProject().getProjectId().equals(updatedTaskDTO.getProjectId())) {
             throw new IllegalArgumentException("Changing the projectId is not allowed.");
         }
-        // Update board
-        if (!task.getBoard().getBoardId().equals(updatedTaskDTO.getBoardId())) {
-            throw new IllegalArgumentException("Changing the boardId is not allowed.");
-        }
+
+        // Validate and update boardId
+        Board board = boardRepo.findById(updatedTaskDTO.getBoardId())
+                .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + updatedTaskDTO.getBoardId()));
+        task.setBoard(board);
+
+        // Update task fields
         task.setTaskName(updatedTaskDTO.getTaskName());
         task.setTaskDescription(updatedTaskDTO.getTaskDescription());
         task.setStatus(updatedTaskDTO.getStatus());
         task.setPriority(updatedTaskDTO.getPriority());
         task.setUpdatedAt(updatedTaskDTO.getUpdatedAt());
 
-        // Retrieve project members
-        List<User> projectMembers = userRepo.findByProjectId(updatedTaskDTO.getProjectId());
 
-        // Check if assigned user is a member of the project
-        User assignedTo = null;
+
+        // Validate and update assigned user
+        List<User> projectMembers = userRepo.findByProjectId(updatedTaskDTO.getProjectId());
         if (updatedTaskDTO.getAssignedToUserId() != null) {
-            assignedTo = projectMembers.stream()
+            User assignedTo = projectMembers.stream()
                     .filter(user -> user.getId().equals(updatedTaskDTO.getAssignedToUserId()))
                     .findFirst()
                     .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
+            task.setAssignedTo(assignedTo);
         }
-        task.setAssignedTo(assignedTo);
 
+        // Save the updated task
         Task updatedTask = taskRepo.save(task);
+
+        // Map entity back to DTO and return
         return TaskMapper.INSTANCE.toTaskDTO(updatedTask);
     }
 

@@ -24,6 +24,7 @@ import org.springframework.data.jpa.domain.Specification;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private final UserRepo userRepo;
     @Autowired
     private FuncRoleRepo funcRoleRepo;
@@ -125,6 +126,7 @@ public class UserServiceImpl implements UserService {
 
 //        user.setPassword(updatedUser.getPassword());
 //        user.setHash(updatedUser.getHashedPassword());
+//        user.setPassword(updatedUser.getHashedPassword());
 
         user.setFuncRole(role); // Set the FuncRole entity
         user.setIsTeamLeader(updatedUser.getIsTeamLeader());
