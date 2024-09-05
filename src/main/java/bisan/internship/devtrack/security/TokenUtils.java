@@ -2,6 +2,7 @@ package bisan.internship.devtrack.security;
 
 import bisan.internship.devtrack.model.security.SecurityUser;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,9 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.security.core.GrantedAuthority;
 
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +34,7 @@ public class TokenUtils {
     */
     private static final Logger logger = LoggerFactory.getLogger(TokenUtils.class);
     private static final String AUDIENCE_WEB = "web";
+    private static final String RESET_TOKEN_SUBJECT = "password-reset";
 
     @Value("${javatab.token.secret}")
     private String secret;
@@ -45,10 +45,9 @@ public class TokenUtils {
     public String getUsernameFromToken(String token) {//Extracts the username from the JWT token.
         String username = null;
         try {
-            logger.info("Token: {}", token);
+//            logger.info("Token: {}", token);
 
             final Claims claims = this.getClaimsFromToken(token);
-//            assert claims != null;
             if (claims != null) {
                 username = claims.getSubject();
             } else {
@@ -61,14 +60,14 @@ public class TokenUtils {
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        logger.info("validateToken called: {}", userDetails);
+//        logger.info("validateToken called: {}", userDetails);
 
 
         //Validates the token against the user details,
         // checking username, token expiration, and password reset dates.
         SecurityUser secUser = (SecurityUser) userDetails;
         final String username = this.getUsernameFromToken(token);
-        logger.info("        final String username = this.getUsernameFromToken(token): {}", username);
+//        logger.info("        final String username = this.getUsernameFromToken(token): {}", username);
 
         final Date created = this.getCreatedDateFromToken(token);
         final Date expiration = this.getExpirationDateFromToken(token);
@@ -166,14 +165,8 @@ public class TokenUtils {
         return (lastPasswordReset != null && created.before(lastPasswordReset));
     }
 
-
-////////////////////////////////////////////////////////////////////////////  //used in AuthenticationServiceImpl class:
-
-    //used in AuthenticationServiceImpl class:
-    public String generateToken(UserDetails userDetails) {//Generates a new JWT token with the provided user details and device information.
-        Map<String, Object> claims = new HashMap<String, Object>();
-
-        logger.info("sub: {}", userDetails.getUsername());
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
 
         claims.put("sub", userDetails.getUsername()); //username is actually the email
         claims.put("audience", AUDIENCE_WEB);
@@ -198,7 +191,7 @@ public class TokenUtils {
     }
 
     private String generateToken(Map<String, Object> claims) {
-        logger.info("chinaaaaaaaaaaaa: {}", claims);
+//        logger.info("chinaaaaaaaaaaaa: {}", claims);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -226,4 +219,65 @@ public class TokenUtils {
         }
         return refreshedToken;
     }
+////////////////////////////////////////////////////////////////////////////pass
+    // Generate expiration date 30 minutes from the current time
+    private Date generateExpirationDate(int minutes) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, minutes); // Add 30 minutes
+        return calendar.getTime();
+    }
+
+    // New methods for password reset tokens
+    public String generatePasswordResetToken(SecurityUser securityUser) {
+        Map<String, Object> claims = new HashMap<>();
+//        claims.put("sub", RESET_TOKEN_SUBJECT);
+        claims.put("sub", securityUser.getUsername());
+//        claims.put("email", securityUser.getUsername()); // Use email as username
+        claims.put("created", this.generateCurrentDate());
+
+        // Set token expiration time to 30 minutes from now
+        claims.put("exp", generateExpirationDate(30)); // 30 minutes
+
+        return this.generateToken(claims);
+    }
+
+    public Boolean verifyPasswordResetToken(String token, SecurityUser securityUser) {
+        try {
+            Claims claims = this.getClaimsFromResetToken(token);
+            String tokenSubject = claims.get("sub", String.class);
+
+            // Verify if the token subject matches the username from SecurityUser
+            boolean isSubjectValid = securityUser.getUsername().equals(tokenSubject);
+
+            // Check if the token has expired
+            boolean isNotExpired = !isTokenExpired(claims);
+
+            return isSubjectValid && isNotExpired;
+        } catch (ExpiredJwtException e) {
+            logger.error("Token has expired: {}", e.getMessage());
+            return false;
+        } catch (Exception e) {
+            logger.error("Error verifying password reset token: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean isTokenExpired(Claims claims) {
+        Date expiration = claims.getExpiration();
+        return expiration.before(new Date());
+    }
+
+    // Assuming you have this method to extract claims from the token
+    private Claims getClaimsFromResetToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(secret) // Replace with your actual secret key
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }
+/*
+
+Use SecurityUser where you need to work with specific user details, such as in the validateToken method.
+Use UserDetails where you need to interact with user information in a more generic context, such as in generateToken.
+
+*/

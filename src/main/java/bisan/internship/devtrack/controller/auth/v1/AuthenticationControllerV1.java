@@ -1,9 +1,8 @@
 package bisan.internship.devtrack.controller.auth.v1;
 
-import bisan.internship.devtrack.dto.auth.AuthRequest;
-import bisan.internship.devtrack.dto.auth.AuthResponse;
-import bisan.internship.devtrack.dto.auth.RegisterRequest;
+import bisan.internship.devtrack.dto.auth.*;
 import bisan.internship.devtrack.model.entity.User;
+//import bisan.internship.devtrack.service.auth.AuthService;
 import bisan.internship.devtrack.service.auth.AuthService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,5 +38,15 @@ public class AuthenticationControllerV1 extends BaseController {
     User createdUser= this.authenticationService.registerUser(registerRequest);
     return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
   }
+  @PostMapping("/password-reset")
+  public ResponseEntity<Void> requestPasswordReset(@RequestBody @Valid PasswordResetRequest passwordResetRequest) {
+    authenticationService.requestPasswordReset(passwordResetRequest);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
+  @PostMapping("/password-reset/confirm")
+  public ResponseEntity<Void> confirmPasswordReset(@RequestBody @Valid PasswordResetConfirmRequest passwordResetConfirmRequest) {
+    authenticationService.confirmPasswordReset(passwordResetConfirmRequest);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }
