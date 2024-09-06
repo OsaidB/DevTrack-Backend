@@ -25,7 +25,7 @@ public class TaskDTO {
     @NotNull(message = "Board ID cannot be null")
     private Long boardId;
 
-    @NotNull(message = "task name cannot be null")
+    @NotNull(message = "Task name cannot be null")
     private String taskName;
 
     private String taskDescription;
@@ -34,6 +34,9 @@ public class TaskDTO {
     @Pattern(regexp = "Unassigned Tasks|To Do|Doing|Ready to Review|Reviewing|Ready for QA|In Progress|QA Failed|QA Passed", message = "Invalid status")
     private String status;
     private String priority;
+
+    private LocalDateTime dueDate;  // New field for task deadline
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
