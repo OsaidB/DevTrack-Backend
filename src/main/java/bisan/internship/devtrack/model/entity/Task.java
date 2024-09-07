@@ -42,6 +42,9 @@ public class Task {
     @Column(name = "priority", nullable = true)
     private String priority;
 
+    @Column(name = "due_date", nullable = true)
+    private LocalDateTime dueDate;  // New field for task deadline
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;

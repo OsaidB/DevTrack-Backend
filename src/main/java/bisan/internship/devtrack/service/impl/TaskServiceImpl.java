@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,21 +38,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
-        // Check if the project exists
         Project project = projectRepo.findById(taskDTO.getProjectId())
                 .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + taskDTO.getProjectId()));
 
-        // Check if the board exists
         Board board = boardRepo.findById(taskDTO.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + taskDTO.getBoardId()));
 
-        // Retrieve project members
         List<User> projectMembers = userRepo.findByProjectId(taskDTO.getProjectId());
 
-        // Initialize assigned user as null
         User assignedTo = null;
-
-        // Check if assigned user ID is provided and if the user is a member of the project
         if (taskDTO.getAssignedToUserId() != null) {
             assignedTo = projectMembers.stream()
                     .filter(user -> user.getId().equals(taskDTO.getAssignedToUserId()))
@@ -59,18 +54,14 @@ public class TaskServiceImpl implements TaskService {
                     .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
         }
 
-        // Map DTO to entity
         Task task = TaskMapper.INSTANCE.toTaskEntity(taskDTO);
-
-        // Set the assigned user, board, and project
         task.setAssignedTo(assignedTo);
         task.setBoard(board);
         task.setProject(project);
 
-        // Save the task
+        // Save the task with the due date
         Task savedTask = taskRepo.save(task);
 
-        // Map entity back to DTO and return
         return TaskMapper.INSTANCE.toTaskDTO(savedTask);
     }
 
@@ -78,7 +69,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO getTaskById(Long taskId) {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
-
         return TaskMapper.INSTANCE.toTaskDTO(task);
     }
 
@@ -89,22 +79,20 @@ public class TaskServiceImpl implements TaskService {
                 .map(TaskMapper.INSTANCE::toTaskDTO)
                 .collect(Collectors.toList());
     }
+
     @Override
     public TaskDTO updateTask(Long taskId, TaskDTO updatedTaskDTO) {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
 
-        // Validate projectId consistency
         if (!task.getProject().getProjectId().equals(updatedTaskDTO.getProjectId())) {
             throw new IllegalArgumentException("Changing the projectId is not allowed.");
         }
 
-        // Validate and update boardId
         Board board = boardRepo.findById(updatedTaskDTO.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + updatedTaskDTO.getBoardId()));
         task.setBoard(board);
 
-        // Update task fields
         task.setTaskName(updatedTaskDTO.getTaskName());
 
 //        task.setAssignedTo(updatedTaskDTO.getAssignedToUserId());
@@ -114,9 +102,6 @@ public class TaskServiceImpl implements TaskService {
         task.setPriority(updatedTaskDTO.getPriority());
         task.setUpdatedAt(updatedTaskDTO.getUpdatedAt());
 
-
-
-        // Validate and update assigned user
         List<User> projectMembers = userRepo.findByProjectId(updatedTaskDTO.getProjectId());
         if (updatedTaskDTO.getAssignedToUserId() != null) {
             User assignedTo = projectMembers.stream()
@@ -128,10 +113,10 @@ public class TaskServiceImpl implements TaskService {
             task.setAssignedTo(null);
         }
 
-        // Save the updated task
-        Task updatedTask = taskRepo.save(task);
+        // Update the due date
+        task.setDueDate(updatedTaskDTO.getDueDate());
 
-        // Map entity back to DTO and return
+        Task updatedTask = taskRepo.save(task);
         return TaskMapper.INSTANCE.toTaskDTO(updatedTask);
     }
 
@@ -141,6 +126,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
         taskRepo.delete(task);
     }
+
     @Override
     public List<TaskDTO> getTasksByProjectId(long projectId) {
         List<Task> tasks = taskRepo.findByProjectProjectId(projectId);
@@ -160,6 +146,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDTO> getTasksByBoardId(long boardId) {
         List<Task> tasks = taskRepo.findByBoardBoardId(boardId);
+        return tasks.stream()
+                .map(TaskMapper.INSTANCE::toTaskDTO)
+                .collect(Collectors.toList());
+    }
+
+    // New method for retrieving tasks by due date
+    @Override
+    public List<TaskDTO> getTasksByDueDateBefore(LocalDateTime dateTime) {
+        List<Task> tasks = taskRepo.findByDueDateBefore(dateTime);
         return tasks.stream()
                 .map(TaskMapper.INSTANCE::toTaskDTO)
                 .collect(Collectors.toList());

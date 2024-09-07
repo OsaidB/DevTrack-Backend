@@ -2,6 +2,7 @@ package bisan.internship.devtrack.service;
 
 import bisan.internship.devtrack.dto.TaskDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskService {
@@ -16,4 +17,7 @@ public interface TaskService {
     List<TaskDTO> getTasksByUserId(long userId);
 
     List<TaskDTO> getTasksByBoardId(long boardId);
+
+    // New method to get tasks by due date before a specific date
+    List<TaskDTO> getTasksByDueDateBefore(LocalDateTime dateTime);
 }
