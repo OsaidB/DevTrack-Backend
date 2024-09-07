@@ -106,6 +106,9 @@ public class TaskServiceImpl implements TaskService {
 
         // Update task fields
         task.setTaskName(updatedTaskDTO.getTaskName());
+
+//        task.setAssignedTo(updatedTaskDTO.getAssignedToUserId());
+
         task.setTaskDescription(updatedTaskDTO.getTaskDescription());
         task.setStatus(updatedTaskDTO.getStatus());
         task.setPriority(updatedTaskDTO.getPriority());
@@ -121,6 +124,8 @@ public class TaskServiceImpl implements TaskService {
                     .findFirst()
                     .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
             task.setAssignedTo(assignedTo);
+        }else {
+            task.setAssignedTo(null);
         }
 
         // Save the updated task
