@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,7 +27,7 @@ public class Board {
     private FunctionalRole role;
 
     @ManyToOne
-    @JoinColumn(name = "project_id",nullable = false)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @CreationTimestamp
@@ -39,4 +41,8 @@ public class Board {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    // Task relationship with proper cascading
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Task> tasks = new ArrayList<>();
 }

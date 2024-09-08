@@ -11,12 +11,13 @@ import java.util.List;
 public interface TaskRepo extends JpaRepository<Task, Long> {
     List<Task> findByProjectProjectId(long projectId);
 
-
     List<Task> findByAssignedToId(long userId);
-
 
     List<Task> findByBoardBoardId(long boardId);
 
     // New query method to find tasks by dueDate before a specific time
     List<Task> findByDueDateBefore(LocalDateTime dateTime);
+
+    // New delete method to remove tasks by board ID
+    void deleteByBoardBoardId(long boardId);
 }

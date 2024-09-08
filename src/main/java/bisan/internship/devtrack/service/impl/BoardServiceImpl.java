@@ -11,6 +11,7 @@ import bisan.internship.devtrack.repository.BoardRepo;
 import bisan.internship.devtrack.repository.ProjectRepo;
 import bisan.internship.devtrack.repository.FuncRoleRepo;
 import bisan.internship.devtrack.service.BoardService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import bisan.internship.devtrack.repository.TaskRepo; // Import TaskRepo
 
 @Service
 @AllArgsConstructor
@@ -33,21 +36,17 @@ public class BoardServiceImpl implements BoardService {
     private FuncRoleRepo funcRoleRepo;
 
     @Autowired
-    private final FuncRoleServiceImpl FuncRoleService; // Inject RoleServiceImpl
+    private TaskRepo taskRepo; // Add TaskRepo dependency
+
+    @Autowired
+    private final FuncRoleServiceImpl FuncRoleService;
 
     private final RoleConfigurationService roleConfigurationService;
 
-//    @Autowired
-//    private BoardMapper boardMapper;
-
     @Override
     public BoardDTO createBoard(Long projectId, Long roleId) {
-
         FunctionalRole role = funcRoleRepo.findById(roleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
-//        if (role == null) {
-//            throw new RuntimeException("Role not found");
-//        }
 
         Board board = new Board();
         board.setName(role.getRoleName());
@@ -103,44 +102,30 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional // Ensure that the delete operation is transactional
     public void deleteBoard(Long boardId) {
         Board board = boardRepo.findById(boardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + boardId));
+
+        // Remove all tasks associated with the board
+        taskRepo.deleteByBoardBoardId(boardId);
+
+        // Delete the board
         boardRepo.delete(board);
     }
 
     @Override
     public void addDefaultBoards(long projectId) {
-        // Create default boards
-        // Example IDs for default roles
-//        Long backendRoleId = RoleConstants.BACKEND_ROLE_ID;
-//        Long frontendRoleId = RoleConstants.FRONTEND_ROLE_ID;
-//        Long qaRoleId = RoleConstants.QA_ROLE_ID;
-
-        // Get or create roles
         RoleDTO backendRole = FuncRoleService.getOrCreateRole("Backend");
         RoleDTO frontendRole = FuncRoleService.getOrCreateRole("Frontend");
         RoleDTO qaRole = FuncRoleService.getOrCreateRole("QA");
 
-        // Save role IDs to configuration
         roleConfigurationService.setBackendRoleId(backendRole.getFuncRoleId());
         roleConfigurationService.setFrontendRoleId(frontendRole.getFuncRoleId());
         roleConfigurationService.setQaRoleId(qaRole.getFuncRoleId());
-
-//        if (!roleService.isRoleName(backendRoleId, "Backend")) {
-//            throw new RuntimeException("Invalid role ID for Backend");
-//        }
-//        if (!roleService.isRoleName(frontendRoleId, "Frontend")) {
-//            throw new RuntimeException("Invalid role ID for Frontend");
-//        }
-//        if (!roleService.isRoleName(qaRoleId, "QA")) {
-//            throw new RuntimeException("Invalid role ID for QA");
-//        }
-
 
         createBoard(projectId, backendRole.getFuncRoleId());
         createBoard(projectId, frontendRole.getFuncRoleId());
         createBoard(projectId, qaRole.getFuncRoleId());
     }
-
 }

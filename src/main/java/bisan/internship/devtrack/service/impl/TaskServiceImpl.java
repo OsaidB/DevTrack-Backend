@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import bisan.internship.devtrack.service.CommentService; // Import the CommentService
+
 @Service
 @AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
@@ -35,6 +37,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private final BoardRepo boardRepo;
+
+    @Autowired
+    private final CommentService commentService; // Add this
 
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
@@ -124,6 +129,11 @@ public class TaskServiceImpl implements TaskService {
     public void deleteTask(Long taskId) {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
+
+        // Delete comments associated with the task first
+        commentService.deleteCommentsByTaskId(taskId);
+
+        // Now delete the task
         taskRepo.delete(task);
     }
 
